@@ -1,0 +1,52 @@
+name: hsaf_env
+channels:
+  - defaults
+dependencies:
+  - ca-certificates=2017.08.26=h1d4fec5_0
+  - certifi=2018.1.18=py27_0
+  - curl=7.58.0=h84994c4_0
+  - hdf4=4.2.13=h3ca952b_2
+  - hdf5=1.10.1=h9caa474_1
+  - intel-openmp=2018.0.0=hc7b2577_8
+  - jpeg=9b=h024ee3a_2
+  - libcurl=7.58.0=h1ad7b7a_0
+  - libedit=3.1=heed3624_0
+  - libffi=3.2.1=hd88cf55_4
+  - libgcc-ng=7.2.0=h7cc24e2_2
+  - libgfortran-ng=7.2.0=h9f7466a_2
+  - libnetcdf=4.4.1.1=h816af47_8
+  - libssh2=1.8.0=h9cfc8f7_4
+  - libstdcxx-ng=7.2.0=h7a57d05_2
+  - mkl=2018.0.1=h19d6760_4
+  - ncurses=6.0=h9df7e31_2
+  - netcdf4=1.3.1=py27hca9ce0b_2
+  - numpy=1.14.0=py27h3dfced4_1
+  - openssl=1.0.2n=hb7f436b_0
+  - pip=9.0.1=py27ha730c48_4
+  - python=2.7.14=h1571d57_29
+  - readline=7.0=ha6073c6_4
+  - setuptools=38.4.0=py27_0
+  - sqlite=3.22.0=h1bed415_0
+  - tk=8.6.7=hc745277_3
+  - wheel=0.30.0=py27h2bc6bb2_1
+  - zlib=1.2.11=ha838bed_2
+  - pip:
+    - backports.functools-lru-cache==1.5
+    - cycler==0.10.0
+    - matplotlib==2.1.2
+    - pandas==0.22.0
+    - pygeobase==0.3.17
+    - pygeogrids==0.2.5
+    - pykdtree==1.2.2
+    - pynetcf==0.1.17
+    - pyparsing==2.2.0
+    - pyproj==1.9.5.1
+    - pytesmo==0.6.8
+    - python-dateutil==2.6.1
+    - pytz==2017.3
+    - repurpose==0.4
+    - scipy==1.0.0
+    - six==1.11.0
+    - subprocess32==3.2.7
+
+
