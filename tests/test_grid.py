@@ -10,3 +10,5 @@ def test_CCI025_cell_grid():
 
 
 
+if __name__ == '__main__':
+    test_CCI025_cell_grid()
