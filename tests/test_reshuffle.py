@@ -27,7 +27,6 @@ class ReshuffleTest(unittest.TestCase):
         ts_SM0_10_values_should = np.array([9.595, 9.593, 9.578,
                                             9.562, 9.555, 9.555, 9.556],
                                            dtype=np.float32)
-        print ts['SoilMoi0_10cm_inst'].values
         # nptest.assert_allclose(ts['SoilMoi0_10cm_inst'].values,
         #                        ts_SM0_10_values_should, rtol=1e-5)
         # ts_SM10_40_values_should = np.array([50.065, 50.064, 50.062,
