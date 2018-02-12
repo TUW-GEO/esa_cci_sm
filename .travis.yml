@@ -32,6 +32,7 @@ install:
 
   - conda create -q -n test-environment -c conda-forge python=$TRAVIS_PYTHON_VERSION numpy netCDF4=1.2.2 matplotlib basemap pyresample pyproj
   - source activate test-environment
+  - pip install --upgrade setuptools
   - pip install pygrib
   - pip install pygeogrids
   - pip install pygeobase
