@@ -41,6 +41,5 @@ six
 snowballstemmer
 Sphinx
 sphinxcontrib-websupport
-subprocess32
 typing
 urllib3
