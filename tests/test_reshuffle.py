@@ -15,7 +15,7 @@ class ReshuffleTest(unittest.TestCase):
                               "hsaf_cci_042_data", "esa_cci")
         startdate = "2016-12-27T00:00"
         enddate = "2016-12-31T00:00"
-        parameters = ["SoilMoi0_10cm_inst", "SoilMoi10_40cm_inst"]
+        parameters = ["sm"]
         ts_path = tempfile.mkdtemp()
         args = [inpath, ts_path, startdate, enddate] + parameters
         main(args)
@@ -24,16 +24,13 @@ class ReshuffleTest(unittest.TestCase):
 
         ds = CCITs(ts_path)
         ts = ds.read(45, 15)
-        ts_SM0_10_values_should = np.array([9.595, 9.593, 9.578,
-                                            9.562, 9.555, 9.555, 9.556],
-                                           dtype=np.float32)
-        # nptest.assert_allclose(ts['SoilMoi0_10cm_inst'].values,
-        #                        ts_SM0_10_values_should, rtol=1e-5)
-        # ts_SM10_40_values_should = np.array([50.065, 50.064, 50.062,
-        #                                      50.060, 50.059, 50.059,
-        #                                      50.059], dtype=np.float32)
-        # nptest.assert_allclose(ts['SoilMoi10_40cm_inst'].values,
-        #                        ts_SM10_40_values_should, rtol=1e-5)
+        print(ts['sm'].values)
+        ts_values_should = np.array([1.70000002e-01, 9.99900000e+03,
+                                        1.59999996e-01, 9.99900000e+03,
+                                        1.70000002e-01],dtype=np.float32)
+        nptest.assert_allclose(ts['sm'].values,
+                               ts_values_should, rtol=1e-5)
+
 
 
 if __name__ == '__main__':
