@@ -35,7 +35,7 @@ from pygeogrids import BasicGrid
 
 from repurpose.img2ts import Img2Ts
 
-from interface import CCI_SM_v042_025Ds
+from hsaf_cci_042.interface import CCI_SM_v042_025Ds
 
 
 def get_filetype(inpath):
