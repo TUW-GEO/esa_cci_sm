@@ -12,7 +12,7 @@ from pygeogrids.netcdf import load_grid
 
 from datetime import timedelta
 
-from grid import CCI025Cellgrid
+from hsaf_cci_042.grid import CCI025Cellgrid
 from netCDF4 import Dataset
 
 class CCI_SM_v042_025Img(ImageBase):

@@ -29,12 +29,11 @@ time series format using the repurpose package
 import os
 import sys
 import argparse
+
 from datetime import datetime
 
 from pygeogrids import BasicGrid
-
 from repurpose.img2ts import Img2Ts
-
 from hsaf_cci_042.interface import CCI_SM_v042_025Ds
 
 
