@@ -1,6 +1,9 @@
 from hsaf_cci_042.grid import CCI025Cellgrid
 
 def test_CCI025_cell_grid():
+    """
+    test for the grid function
+    """
     hsaf_grid = CCI025Cellgrid()
     assert hsaf_grid.activegpis.size == 1036800
     assert hsaf_grid.activegpis[153426] == 153426

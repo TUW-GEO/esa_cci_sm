@@ -27,7 +27,7 @@ class CCI_SM_v042_025Img(ImageBase):
         mode of opening the file, only 'r' is implemented at the moment
     parameter : string or list, optional
         one or list of parameters to read, see ESACCI v0.42 documentation for more information
-        Default : 'SoilMoi0_10cm_inst'
+        Default : 'sm'
     array_1D: boolean, optional
         if set then the data is read into 1D arrays. Needed for some legacy code.
     """

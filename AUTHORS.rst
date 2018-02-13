@@ -2,4 +2,4 @@
 Developers
 ==========
 
-* Manuel Schmitzer <manuel.schmitzer@tuwien.ac.at>
+* TU Wien <remote.sensing@geo.tuwien.ac.at>
