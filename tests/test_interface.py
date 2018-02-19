@@ -18,9 +18,10 @@ def test_CCI_SM_v042_025Ds_img_reading():
     image = img.read(
         datetime(2016, 6, 6, 0))
 
+    assert sorted(image.data.keys()) == sorted(parameter)
     assert image.timestamp == datetime(2016, 6, 6, 0)
     # assert round(image.data['sm'][123840], 2) == 0.31
-    assert image.data['sm'][123840] == 0.31
+    assert abs(image.data['sm'][123840] - 0.31) <= 1e-5
     assert image.lon.shape == (360 * 180 * (1 / 0.25)**2,)
     assert image.lon.shape == image.lat.shape
 
@@ -37,6 +38,7 @@ def test_CCI_SM_v042_025Ds_timestamps_for_daterange():
 
     tstamps = img.tstamps_for_daterange(datetime(2016, 1, 1),
                                         datetime(2016, 1, 1))
+
     assert len(tstamps) == 8
     assert tstamps == [datetime(2016, 1, 1, 0),
                        datetime(2016, 1, 1, 3),
@@ -61,7 +63,10 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
         array_1D=True)
 
     image = img.read()
-    assert round(image.data['sm'][122486], 2) == 0.31
+
+    assert sorted(image.data.keys()) == sorted(parameter)
+    # assert round(image.data['sm'][123840], 2) == 0.31
+    assert abs(image.data['sm'][123840] - 0.31) <= 1e-5
 
 
 def test_CCI_SM_v042_025Img_img_reading_2D():
@@ -77,13 +82,15 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
 
     image = img.read()
 
+    assert sorted(image.data.keys()) == sorted(parameter)
     assert image.data['sm'].shape == (720, 1440)
     assert image.lon[0, 0] == -179.875
     assert image.lon[0, 1439] == 179.875
     assert image.lat[0, 0] == 89.875
     assert image.lat[719, 0] == -89.875
     assert sorted(image.data.keys()) == sorted(parameter)
-    assert round(image.data['sm'][86, 0], 2) == 0.31
+    # assert round(image.data['sm'][86, 0], 2) == 0.31
+    assert abs(image.data['sm'][86, 0] - 0.31) <= 1e-5
     # print(image.lon[86, 0])
     # print(image.lat[86, 0])
     assert image.lon.shape == (720, 1440)
