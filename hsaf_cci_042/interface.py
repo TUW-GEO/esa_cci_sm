@@ -38,7 +38,6 @@ class CCI_SM_v042_025Img(ImageBase):
         if type(parameter) != list:
             parameter = [parameter]
         self.parameters = parameter
-        # self.fill_values = np.repeat(9999., 1440 * 120)
         self.grid = CCI025Cellgrid()
         self.array_1D = array_1D
 
@@ -71,10 +70,7 @@ class CCI_SM_v042_025Img(ImageBase):
 
                 param_data = dataset.variables[parameter][:].flatten()
                 np.ma.set_fill_value(param_data, 9999)
-                #
-                # param_data = np.concatenate((self.fill_values,
-                #                              np.ma.getdata(param_data.filled())
-                #                              .flatten()))
+
                 return_img.update(
                     {str(parameter): param_data[self.grid.activegpis]})
                 return_metadata.update({str(parameter): param_metadata})
@@ -136,7 +132,7 @@ class CCI_SM_v042_025Ds(MultiTemporalImageBase):
 
         sub_path = ['%Y']
         # filename_templ = "GLDAS_NOAH025_3H.A{datetime}.*.nc4"
-        filename_templ = "ESACCI-SOILMOISTURE-L3S-SSMV-*-{datetime}-fv04.2.nc"
+        filename_templ = "ESACCI-SOILMOISTURE-L3S-*-{datetime}-fv04.2.nc"
         super(CCI_SM_v042_025Ds, self).__init__(data_path, CCI_SM_v042_025Img,
                                                   fname_templ=filename_templ,
                                                   datetime_format="%Y%m%d%H%M%S",
