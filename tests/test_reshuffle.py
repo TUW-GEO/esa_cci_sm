@@ -22,8 +22,11 @@ def test_reshuffle():
     main(args)
     assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 2593
     ds = CCITs(ts_path)
-    ts = ds.read(40, 15)
-    ts_values_should = np.array([0.25, 0.22],
+    print(ds.read(123840))
+    print(ds.read(68.375, -179.875))  # 0031.nc
+    # ts = ds.read(40, 15)
+    ts = ds.read(123840)
+    ts_values_should = np.array([0.31, 0.40],
                                 dtype=np.float32)
     nptest.assert_allclose(ts['sm'].values,
                            ts_values_should, rtol=1e-5)

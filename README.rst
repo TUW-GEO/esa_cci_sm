@@ -3,9 +3,6 @@ hsaf_cci_042
 ============
 
 
-Reading and reshuffling of CCI soil moisture
-
-
 .. image:: https://travis-ci.org/TUW-GEO/hsaf_cci_042.svg?branch=master
     :target: https://travis-ci.org/TUW-GEO/hsaf_cci_042
 
