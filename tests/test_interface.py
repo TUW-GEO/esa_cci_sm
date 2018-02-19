@@ -19,7 +19,8 @@ def test_CCI_SM_v042_025Ds_img_reading():
         datetime(2016, 6, 6, 0))
 
     assert image.timestamp == datetime(2016, 6, 6, 0)
-    assert round(image.data['sm'][123840], 3) == 0.31
+    # assert round(image.data['sm'][123840], 2) == 0.31
+    assert image.data['sm'][123840] == 0.31
     assert image.lon.shape == (360 * 180 * (1 / 0.25)**2,)
     assert image.lon.shape == image.lat.shape
 
@@ -60,7 +61,7 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
         array_1D=True)
 
     image = img.read()
-    assert round(image.data['sm'][122486],3) == 0.31
+    assert round(image.data['sm'][122486], 2) == 0.31
 
 
 def test_CCI_SM_v042_025Img_img_reading_2D():
@@ -82,7 +83,7 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
     assert image.lat[0, 0] == 89.875
     assert image.lat[719, 0] == -89.875
     assert sorted(image.data.keys()) == sorted(parameter)
-    assert round(image.data['sm'][86, 0], 3) == 0.31
+    assert round(image.data['sm'][86, 0], 2) == 0.31
     # print(image.lon[86, 0])
     # print(image.lat[86, 0])
     assert image.lon.shape == (720, 1440)
