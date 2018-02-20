@@ -22,9 +22,9 @@ def test_reshuffle():
     main(args)
     assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 2593
     ds = CCITs(ts_path)
-    # print(ds.read(123840))
     # print(ds.read(-179.875, 68.375))  # 0031.nc
-    # ts = ds.read(40, 15)
+    # print(ds.read(123840))
+    # print(ds.read(179.875, -89.875))
     ts = ds.read(123840)
     ts_values_should = np.array([0.31, 0.40],
                                 dtype=np.float32)

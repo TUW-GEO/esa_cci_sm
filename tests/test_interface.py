@@ -138,6 +138,8 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
 
     image_p = img_p.read()
 
+    # print(image_p.lon[123840])
+    # print(image_p.lat[123840])
     assert sorted(image_p.data.keys()) == sorted(parameter)
     assert abs(image_p.data['sm'][123840] - 0.31) <= 1e-3
 
@@ -155,7 +157,7 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
 
 def test_CCI_SM_v042_025Img_img_reading_2D():
     """
-    2D (lat, long) test for the read function of the CCI_SM_v042_025Img class
+    2D test for the read function of the CCI_SM_v042_025Img class
     _a for active
     _p for passive
     _c for combined
@@ -195,9 +197,10 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
     assert image_p.lat[0, 0] == 89.875
     assert image_p.lat[719, 0] == -89.875
     assert sorted(image_p.data.keys()) == sorted(parameter)
+    assert image_p.lon[86, 0] == -179.875
+    assert image_p.lat[86, 0] == 68.375
+    # lon,lat for [86, 0] = -179.875, 68.375
     assert abs(image_p.data['sm'][86, 0] - 0.31) <= 1e-3
-    # print(image_p.lon[86, 0])
-    # print(image_p.lat[86, 0])
     assert image_p.lon.shape == (720, 1440)
     assert image_p.lon.shape == image_p.lat.shape
 

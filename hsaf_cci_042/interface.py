@@ -87,7 +87,7 @@ class CCI_SM_v042_025Img(ImageBase):
         dataset.close()
         if self.array_1D:
             return Image(self.grid.activearrlon,
-                         self.grid.activearrlat,
+                         np.flipud(self.grid.activearrlat),
                          return_img,
                          return_metadata,
                          timestamp)
@@ -95,7 +95,7 @@ class CCI_SM_v042_025Img(ImageBase):
             for key in return_img:
                 return_img[key] = return_img[key].reshape((720, 1440))
 
-            return Image(np.flipud(self.grid.activearrlon.reshape((720, 1440))),
+            return Image((self.grid.activearrlon.reshape((720, 1440))),
                          np.flipud(self.grid.activearrlat.reshape((720, 1440))),
                          return_img,
                          return_metadata,
