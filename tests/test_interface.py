@@ -126,6 +126,8 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
 
     image_a = img_a.read()
 
+    assert image_a.lon[133920] == -179.875
+    assert image_a.lat[133920] == 66.625
     assert sorted(image_a.data.keys()) == sorted(parameter)
     assert abs(image_a.data['sm'][133920] - 100) <= 1e-3
 

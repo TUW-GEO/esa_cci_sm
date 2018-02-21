@@ -20,17 +20,17 @@ def test_reshuffle():
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters
     main(args)
-    assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 2593
     ds = CCITs(ts_path)
-    # print(ds.read(-179.875, 68.375))  # 0031.nc
-    # print(ds.read(123840))
-    # print(ds.read(179.875, -89.875))
-    ts = ds.read(123840)
+    assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 2593
+    assert ds.grid.find_nearest_gpi(-179.875, 68.375)[0] == 123840
+    ts_1d = ds.read(123840)
+    ts_2d = ds.read(-179.875, 68.375)  # 0031.nc
     ts_values_should = np.array([0.31, 0.40],
                                 dtype=np.float32)
-    nptest.assert_allclose(ts['sm'].values,
+    nptest.assert_allclose(ts_1d['sm'].values,
                            ts_values_should, rtol=1e-5)
-
+    nptest.assert_allclose(ts_2d['sm'].values,
+                           ts_values_should, rtol=1e-5)
 
 if __name__ == '__main__':
     test_reshuffle()

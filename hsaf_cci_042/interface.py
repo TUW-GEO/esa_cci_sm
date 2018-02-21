@@ -131,8 +131,7 @@ class CCI_SM_v042_025Ds(MultiTemporalImageBase):
                        'array_1D': array_1D}
 
         sub_path = ['%Y']
-        # filename_templ = "GLDAS_NOAH025_3H.A{datetime}.*.nc4"
-        filename_templ = "ESACCI-SOILMOISTURE-L3S-*-{datetime}-fv04.2.nc"
+        filename_templ = "ESACCI-SOILMOISTURE-L3S-*-{datetime}-fv04*.nc"
         super(CCI_SM_v042_025Ds, self).__init__(data_path, CCI_SM_v042_025Img,
                                                   fname_templ=filename_templ,
                                                   datetime_format="%Y%m%d%H%M%S",
