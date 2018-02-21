@@ -138,8 +138,8 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
 
     image_p = img_p.read()
 
-    # print(image_p.lon[123840])
-    # print(image_p.lat[123840])
+    assert image_p.lon[123840] == -179.875
+    assert image_p.lat[123840] == 68.375
     assert sorted(image_p.data.keys()) == sorted(parameter)
     assert abs(image_p.data['sm'][123840] - 0.31) <= 1e-3
 
@@ -152,6 +152,8 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
 
     image_c = img_c.read()
 
+    assert image_c.lon[122400] == -179.875
+    assert image_c.lat[122400] == 68.625
     assert sorted(image_c.data.keys()) == sorted(parameter)
     assert abs(image_c.data['sm'][122400] - 0.1755) <= 1e-3
 
@@ -177,7 +179,6 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
     assert image_a.lon[0, 1439] == 179.875
     assert image_a.lat[0, 0] == 89.875
     assert image_a.lat[719, 0] == -89.875
-    assert sorted(image_a.data.keys()) == sorted(parameter)
     assert abs(image_a.data['sm'][93, 0] - 100) <= 1e-3
     assert image_a.lon.shape == (720, 1440)
     assert image_a.lon.shape == image_a.lat.shape
@@ -196,10 +197,8 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
     assert image_p.lon[0, 1439] == 179.875
     assert image_p.lat[0, 0] == 89.875
     assert image_p.lat[719, 0] == -89.875
-    assert sorted(image_p.data.keys()) == sorted(parameter)
     assert image_p.lon[86, 0] == -179.875
     assert image_p.lat[86, 0] == 68.375
-    # lon,lat for [86, 0] = -179.875, 68.375
     assert abs(image_p.data['sm'][86, 0] - 0.31) <= 1e-3
     assert image_p.lon.shape == (720, 1440)
     assert image_p.lon.shape == image_p.lat.shape
@@ -218,7 +217,7 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
     assert image_c.lon[0, 1439] == 179.875
     assert image_c.lat[0, 0] == 89.875
     assert image_c.lat[719, 0] == -89.875
-    assert sorted(image_c.data.keys()) == sorted(parameter)
+    assert image_c.lat[85, 0] == 68.625
     assert abs(image_c.data['sm'][85, 0] - 0.1755) <= 1e-3
     assert image_c.lon.shape == (720, 1440)
     assert image_c.lon.shape == image_c.lat.shape
