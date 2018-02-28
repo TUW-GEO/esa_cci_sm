@@ -22,8 +22,8 @@ def test_reshuffle():
     main(args)
     ds = CCITs(ts_path)
     assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 2593
-    assert ds.grid.find_nearest_gpi(-179.875, 68.375)[0] == 123840
-    ts_1d = ds.read(123840)
+    assert ds.grid.find_nearest_gpi(-179.875, 68.375)[0] == 911520
+    ts_1d = ds.read(911520)
     ts_2d = ds.read(-179.875, 68.375)  # 0031.nc
     ts_values_should = np.array([0.31, 0.40],
                                 dtype=np.float32)

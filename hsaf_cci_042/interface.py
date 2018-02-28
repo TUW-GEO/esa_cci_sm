@@ -68,7 +68,9 @@ class CCI_SM_v042_025Img(ImageBase):
                         param_metadata.update(
                             {str(attrname): getattr(variable, attrname)})
 
-                param_data = dataset.variables[parameter][:].flatten()
+                # param_data = dataset.variables[parameter][:].flatten()
+                param_data = dataset.variables[parameter][:]
+                param_data = np.flipud(param_data[0,:,:]).flatten()
                 np.ma.set_fill_value(param_data, 9999)
 
                 return_img.update(
@@ -86,20 +88,19 @@ class CCI_SM_v042_025Img(ImageBase):
 
         dataset.close()
         if self.array_1D:
-            return Image(self.grid.activearrlon,
-                         np.flipud(self.grid.activearrlat),
-                         return_img,
-                         return_metadata,
-                         timestamp)
+            return Image(self.grid.activearrlon, self.grid.activearrlat,
+                         return_img, return_metadata, timestamp)
         else:
             for key in return_img:
-                return_img[key] = return_img[key].reshape((720, 1440))
+                return_img[key] = np.flipud(
+                    return_img[key].reshape((720, 1440)))
 
-            return Image((self.grid.activearrlon.reshape((720, 1440))),
-                         np.flipud(self.grid.activearrlat.reshape((720, 1440))),
-                         return_img,
-                         return_metadata,
-                         timestamp)
+            return Image(
+                (self.grid.activearrlon.reshape((720, 1440))),
+                np.flipud(self.grid.activearrlat.reshape((720, 1440))),
+                return_img,
+                return_metadata,
+                timestamp)
 
     def write(self, data):
         raise NotImplementedError()
