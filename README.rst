@@ -53,12 +53,10 @@ Guidelines
 If you want to contribute please follow these steps:
 
 - Fork the hsaf_cci_042 repository to your account
-- Clone the repository, make sure you use ``git clone --recursive``
-to also get the test data repository.
+- Clone the repository, make sure you use ``git clone --recursive`` to also get the test data repository.
 - make a new feature branch from the hsaf_cci_042 master branch
 - Add your feature
-- Please include tests for your contributions in one of the test directories.
-We use py.test so a simple function called test_my_feature is enough
+- Please include tests for your contributions in one of the test directories. We use py.test so a simple function called test_my_feature is enough
 - submit a pull request to our master branch
 
 Note
