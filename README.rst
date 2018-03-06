@@ -8,7 +8,6 @@ hsaf_cci_042
 
 .. image:: https://readthedocs.org/projects/hsaf-cci-042/badge/?version=latest
     :target: http://hsaf-cci-042.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
 
 Reading and reshuffling of CCI soil moisture Written in Python.
 
@@ -21,15 +20,16 @@ commands:
 
 .. code-block:: shell
 
-  conda create -q -n hsaf_cci-environment -c conda-forge numpy netCDF4 pyproj pygrib
-  source activate hsaf_cci-environment
-  pip install hsaf_env
+  git clone git@github.com:TUW-GEO/hsaf_cci_042.git hsaf_cci_042
+  cd hsaf_cci_042
+  conda env create -f environment.yml
+  source activate hsaf_env
 
 Supported Products
 ==================
 
 At the moment this package supports ESA CCI soil moisture data version
-v04.2 and v04.3 in netCDF format (download, reading, time series creation)
+v04.2 and v04.3 in netCDF format (reading and time series creation)
 with a spatial sampling of 0.25 degrees.
 
 Contribute
