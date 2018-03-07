@@ -6,6 +6,10 @@ hsaf_cci_042
 .. image:: https://travis-ci.org/TUW-GEO/hsaf_cci_042.svg?branch=master
     :target: https://travis-ci.org/TUW-GEO/hsaf_cci_042
 
+.. image:: https://coveralls.io/repos/github/TUW-GEO/hsaf_cci_042/badge.svg?branch=master
+  :target: https://coveralls.io/github/TUW-GEO/hsaf_cci_042?branch=master
+
+
 .. image:: https://readthedocs.org/projects/hsaf-cci-042/badge/?version=latest
     :target: http://hsaf-cci-042.readthedocs.io/en/latest/?badge=latest
 
@@ -53,10 +57,12 @@ Guidelines
 If you want to contribute please follow these steps:
 
 - Fork the hsaf_cci_042 repository to your account
-- Clone the repository, make sure you use ``git clone --recursive`` to also get the test data repository.
+- Clone the repository, make sure you use ``git clone --recursive`` to also get
+  the test data repository.
 - make a new feature branch from the hsaf_cci_042 master branch
 - Add your feature
-- Please include tests for your contributions in one of the test directories. We use py.test so a simple function called test_my_feature is enough
+- Please include tests for your contributions in one of the test directories.
+  We use py.test so a simple function called test_my_feature is enough
 - submit a pull request to our master branch
 
 Note
