@@ -7,8 +7,7 @@ hsaf_cci_042
     :target: https://travis-ci.org/TUW-GEO/hsaf_cci_042
 
 .. image:: https://coveralls.io/repos/github/TUW-GEO/hsaf_cci_042/badge.svg?branch=master
-  :target: https://coveralls.io/github/TUW-GEO/hsaf_cci_042?branch=master
-
+    :target: https://coveralls.io/github/TUW-GEO/hsaf_cci_042?branch=master
 
 .. image:: https://readthedocs.org/projects/hsaf-cci-042/badge/?version=latest
     :target: http://hsaf-cci-042.readthedocs.io/en/latest/?badge=latest
