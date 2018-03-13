@@ -1,3 +1,4 @@
 [submodule "tests/hsaf_cci_042_data"]
 	path = tests/hsaf_cci_042_data
-	url = git@github.com:TUW-GEO/hsaf_cci_042_data.git
+	url = https://github.com/TUW-GEO/hsaf_cci_042_data.git
+
