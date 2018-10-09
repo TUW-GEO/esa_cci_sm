@@ -5,7 +5,7 @@ from pygeogrids.grids import BasicGrid
 
 def CCI025Cellgrid():
     """
-    Class for the CCI Version 0.42 0.25deg cell grid.
+    Class for the CCI SM 0.25deg cell grid.
     """
 
     resolution = 0.25
