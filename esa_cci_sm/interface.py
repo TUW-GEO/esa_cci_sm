@@ -12,28 +12,28 @@ from pygeogrids.netcdf import load_grid
 
 from datetime import timedelta
 
-from hsaf_cci_042.grid import CCI025Cellgrid
+from esa_cci_sm.grid import CCI025Cellgrid
 from netCDF4 import Dataset
 
-class CCI_SM_v042_025Img(ImageBase):
+class CCI_SM_025Img(ImageBase):
     """
-    Class for reading one ESACCI SM v0.42 nc file in 0.25° grid.
+    Class for reading one ESA CCI SM netcdf image file on a 0.25 DEG grid.
 
     Parameters
     ----------
     filename: string
-        filename of the ESACCI nc file
-    mode: string, optional
-        mode of opening the file, only 'r' is implemented at the moment
-    parameter : string or list, optional
-        one or list of parameters to read, see ESACCI v0.42 documentation for more information
-        Default : 'sm'
-    array_1D: boolean, optional
-        if set then the data is read into 1D arrays. Needed for some legacy code.
+        Filename of the ESA CCI SM netcdf file
+    mode: string, optional (default: 'r')
+        Mode of opening the file, only 'r' is implemented at the moment
+    parameter : string or list, optional (default: 'sm')
+        One or list of parameters to read, see ESA CCI documentation for
+        more information
+    array_1D: boolean, optional (default: False)
+        If set then the data is read into 1D arrays. Needed for some legacy code.
     """
 
     def __init__(self, filename, mode='r', parameter='sm', array_1D=False):
-        super(CCI_SM_v042_025Img, self).__init__(filename, mode=mode)
+        super(CCI_SM_025Img, self).__init__(filename, mode=mode)
 
         if type(parameter) != list:
             parameter = [parameter]
@@ -42,9 +42,7 @@ class CCI_SM_v042_025Img(ImageBase):
         self.array_1D = array_1D
 
     def read(self, timestamp=None):
-
-        # print 'read file: %s' %self.filename
-        # Returns the selected parameters for a gldas image and according metadata
+        # Returns the selected parameters for a ESA CCI SM image and according metadata
         return_img = {}
         return_metadata = {}
 
@@ -111,19 +109,19 @@ class CCI_SM_v042_025Img(ImageBase):
     def close(self):
         pass
 
-class CCI_SM_v042_025Ds(MultiTemporalImageBase):
+class CCI_SM_025Ds(MultiTemporalImageBase):
     """
-    Class for reading ESACCI SM v0.42 images in nc format.
+    Class for reading ESA CCI SM images in nc format.
 
     Parameters
     ----------
     data_path : string
-        path to the nc files
-    parameter : string or list, optional
-        one or list of parameters to read, see ESACCI SM v0.42 documentation for more information
-        Default : 'sm'
-    array_1D: boolean, optional
-        if set then the data is read into 1D arrays. Needed for some legacy code.
+        Path to the nc image files
+    parameter : string or list, optional (default: 'sm')
+        One or list of parameters to read, see ESA CCI SM documentation
+        for more information
+    array_1D: boolean, optional (default: False)
+        If set then the data is read into 1D arrays. Needed for some legacy code.
     """
 
     def __init__(self, data_path, parameter='sm', array_1D=False):
@@ -132,8 +130,8 @@ class CCI_SM_v042_025Ds(MultiTemporalImageBase):
                        'array_1D': array_1D}
 
         sub_path = ['%Y']
-        filename_templ = "ESACCI-SOILMOISTURE-L3S-*-{datetime}-fv04*.nc"
-        super(CCI_SM_v042_025Ds, self).__init__(data_path, CCI_SM_v042_025Img,
+        filename_templ = "ESACCI-SOILMOISTURE-L3S-*-{datetime}-fv*.nc"
+        super(CCI_SM_025Ds, self).__init__(data_path, CCI_SM_025Img,
                                                   fname_templ=filename_templ,
                                                   datetime_format="%Y%m%d%H%M%S",
                                                   subpath_templ=sub_path,
@@ -142,7 +140,7 @@ class CCI_SM_v042_025Ds(MultiTemporalImageBase):
 
     def tstamps_for_daterange(self, start_date, end_date):
         """
-        return timestamps for daterange,
+        Return timestamps for the passed date range,
 
         Parameters
         ----------
@@ -175,7 +173,7 @@ class CCI_SM_v042_025Ds(MultiTemporalImageBase):
         return timestamps
 
 class CCITs(GriddedNcOrthoMultiTs):
-
+    ''' Read ESA CCI SM netcdf file in time series format'''
     def __init__(self, ts_path, grid_path=None):
         if grid_path is None:
             grid_path = os.path.join(ts_path, "grid.nc")

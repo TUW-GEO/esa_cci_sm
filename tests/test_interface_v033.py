@@ -2,7 +2,7 @@
 import os
 from datetime import datetime
 
-from hsaf_cci_042.interface import CCI_SM_v042_025Ds, CCI_SM_v042_025Img
+from esa_cci_sm.interface import CCI_SM_025Ds, CCI_SM_025Img
 
 
 def test_CCI_SM_v042_025Ds_img_reading():
@@ -14,9 +14,9 @@ def test_CCI_SM_v042_025Ds_img_reading():
     """
     parameter = ['sm']
 
-    img_a = CCI_SM_v042_025Ds(
+    img_a = CCI_SM_025Ds(
         data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "active"), parameter=parameter,
+        "esa_cci_sm_dailyImages", "v04.2", "active"), parameter=parameter,
         array_1D=True)
 
     image_a = img_a.read(
@@ -28,9 +28,9 @@ def test_CCI_SM_v042_025Ds_img_reading():
     assert image_a.lon.shape == (360 * 180 * (1 / 0.25)**2,)
     assert image_a.lon.shape == image_a.lat.shape
 
-    img_p = CCI_SM_v042_025Ds(
+    img_p = CCI_SM_025Ds(
         data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "passive"), parameter=parameter,
+        "esa_cci_sm_dailyImages", "v04.2", "passive"), parameter=parameter,
         array_1D=True)
 
     image_p = img_p.read(
@@ -42,9 +42,9 @@ def test_CCI_SM_v042_025Ds_img_reading():
     assert image_p.lon.shape == (360 * 180 * (1 / 0.25)**2,)
     assert image_p.lon.shape == image_p.lat.shape
 
-    img_c = CCI_SM_v042_025Ds(
+    img_c = CCI_SM_025Ds(
         data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "combined"), parameter=parameter,
+        "esa_cci_sm_dailyImages", "v04.2", "combined"), parameter=parameter,
         array_1D=True)
 
     image_c = img_c.read(
@@ -73,9 +73,9 @@ def test_CCI_SM_v042_025Ds_timestamps_for_daterange():
                        datetime(2016, 1, 1, 15),
                        datetime(2016, 1, 1, 18),
                        datetime(2016, 1, 1, 21)]
-    img_a = CCI_SM_v042_025Ds(
+    img_a = CCI_SM_025Ds(
         data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "active"), parameter=parameter,
+        "esa_cci_sm_dailyImages", "v04.2", "active"), parameter=parameter,
         array_1D=True)
 
     tstamps_a = img_a.tstamps_for_daterange(datetime(2016, 1, 1),
@@ -84,9 +84,9 @@ def test_CCI_SM_v042_025Ds_timestamps_for_daterange():
     assert len(tstamps_a) == 8
     assert tstamps_a == should_datetime
 
-    img_p = CCI_SM_v042_025Ds(
+    img_p = CCI_SM_025Ds(
         data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-                               "esa_cci_sm_dailyImages", "passive"),
+                               "esa_cci_sm_dailyImages", "v04.2", "passive"),
         parameter=parameter,
         array_1D=True)
 
@@ -96,9 +96,9 @@ def test_CCI_SM_v042_025Ds_timestamps_for_daterange():
     assert len(tstamps_p) == 8
     assert tstamps_p == should_datetime
 
-    img_c = CCI_SM_v042_025Ds(
+    img_c = CCI_SM_025Ds(
         data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-                               "esa_cci_sm_dailyImages", "combined"),
+                               "esa_cci_sm_dailyImages", "v04.2", "combined"),
         parameter=parameter,
         array_1D=True)
 
@@ -117,9 +117,9 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
     _c for combined
     """
     parameter = ['sm']
-    img_a = CCI_SM_v042_025Img(
+    img_a = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "active", "2016",
+        "esa_cci_sm_dailyImages", "v04.2", "active", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMS-ACTIVE-20160606000000-fv04.2.nc"),
         parameter=parameter,
         array_1D=True)
@@ -131,9 +131,9 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
     assert sorted(image_a.data.keys()) == sorted(parameter)
     assert abs(image_a.data['sm'][901440] - 100) <= 1e-3
 
-    img_p = CCI_SM_v042_025Img(
+    img_p = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "passive", "2016",
+        "esa_cci_sm_dailyImages", "v04.2", "passive", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-20160606000000-fv04.2.nc"),
         parameter=parameter,
         array_1D=True)
@@ -145,9 +145,9 @@ def test_CCI_SM_v042_025Img_img_reading_1D():
     assert sorted(image_p.data.keys()) == sorted(parameter)
     assert abs(image_p.data['sm'][911520] - 0.31) <= 1e-3
 
-    img_c = CCI_SM_v042_025Img(
+    img_c = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "combined", "2016",
+        "esa_cci_sm_dailyImages", "v04.2", "combined", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-20160607000000-fv04.2.nc"),
         parameter=parameter,
         array_1D=True)
@@ -167,9 +167,9 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
     _c for combined
     """
     parameter = ['sm']
-    img_a = CCI_SM_v042_025Img(
+    img_a = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "active", "2016",
+        "esa_cci_sm_dailyImages", "v04.2", "active", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMS-ACTIVE-20160606000000-fv04.2.nc"),
         parameter=parameter)
 
@@ -185,9 +185,9 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
     assert image_a.lon.shape == (720, 1440)
     assert image_a.lon.shape == image_a.lat.shape
 
-    img_p = CCI_SM_v042_025Img(
+    img_p = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "passive", "2016",
+        "esa_cci_sm_dailyImages", "v04.2", "passive", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-20160606000000-fv04.2.nc"),
         parameter=parameter)
 
@@ -205,9 +205,9 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
     assert image_p.lon.shape == (720, 1440)
     assert image_p.lon.shape == image_p.lat.shape
 
-    img_c = CCI_SM_v042_025Img(
+    img_c = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
-        "esa_cci_sm_dailyImages", "combined", "2016",
+        "esa_cci_sm_dailyImages", "v04.2", "combined", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-20160607000000-fv04.2.nc"),
         parameter=parameter)
 

@@ -34,37 +34,7 @@ from datetime import datetime
 
 from pygeogrids import BasicGrid
 from repurpose.img2ts import Img2Ts
-from hsaf_cci_042.interface import CCI_SM_v042_025Ds
-
-
-def get_filetype(inpath):
-    '''
-    Tries to find out the file type by searching for
-    grib or nc files two subdirectories into the passed input path.
-    If function fails, grib is assumed.
-
-    Parameters
-    ------------
-    input_root: string
-        input path where ESACCI data was downloaded
-    '''
-
-    onedown = os.path.join(inpath, os.listdir(inpath)[0])
-    twodown = os.path.join(onedown, os.listdir(onedown)[0])
-
-    filelist = []
-    for path, subdirs, files in os.walk(twodown):
-        for name in files:
-            filename, extension = os.path.splitext(name)
-            filelist.append(extension)
-
-    if '.nc4' in filelist and '.grb' not in filelist:
-        return 'netCDF'
-    elif '.grb' in filelist and '.nc4' not in filelist:
-        return 'grib'
-    else:
-        # if file type cannot be detected, guess grib
-        return 'grib'
+from esa_cci_sm.interface import CCI_SM_025Ds
 
 
 def mkdate(datestring):
@@ -79,7 +49,7 @@ def reshuffle(input_root, outputpath,
               parameters,
               imgbuffer=50):
     """
-    Reshuffle method applied to ESACCI SM v0.42 data.
+    Reshuffle method applied to ESA CCI SM images.
 
     Parameters
     ----------
@@ -97,7 +67,7 @@ def reshuffle(input_root, outputpath,
         How many images to read at once before writing time series.
     """
 
-    input_dataset = CCI_SM_v042_025Ds(input_root, parameters,
+    input_dataset = CCI_SM_025Ds(input_root, parameters,
                                              array_1D=True)
 
     if not os.path.exists(outputpath):
@@ -129,7 +99,7 @@ def parse_args(args):
     :return: command line parameters as :obj:`argparse.Namespace`
     """
     parser = argparse.ArgumentParser(
-        description="Convert ESACCI data to time series format.")
+        description="Convert ESA CCI image data to time series format.")
     parser.add_argument("dataset_root",
                         help='Root of local filesystem where the data is stored.')
     parser.add_argument("timeseries_root",
