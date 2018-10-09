@@ -1,4 +1,4 @@
-from hsaf_cci_042.grid import CCI025Cellgrid
+from esa_cci_sm.grid import CCI025Cellgrid
 import unittest
 
 class GridTest(unittest.TestCase):

@@ -1,15 +1,15 @@
-from hsaf_cci_042.grid import CCI025Cellgrid
+from esa_cci_sm.grid import CCI025Cellgrid
 
 def test_CCI025_cell_grid():
     """
     test for the grid function
     """
-    hsaf_grid = CCI025Cellgrid()
-    assert hsaf_grid.activegpis.size == 1036800
-    assert hsaf_grid.activegpis[153426] == 153426
-    assert hsaf_grid.activearrcell[153426] == 1409
-    assert hsaf_grid.activearrlat[153426] == -63.375
-    assert hsaf_grid.activearrlon[153426] == 16.625
+    ccigrid = CCI025Cellgrid()
+    assert ccigrid.activegpis.size == 1036800
+    assert ccigrid.activegpis[153426] == 153426
+    assert ccigrid.activearrcell[153426] == 1409
+    assert ccigrid.activearrlat[153426] == -63.375
+    assert ccigrid.activearrlon[153426] == 16.625
 
 
 
