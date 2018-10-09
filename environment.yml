@@ -1,4 +1,4 @@
-name: hsaf_env
+name: esa_cci_sm
 channels:
   - defaults
 dependencies:

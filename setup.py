@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-    Setup file for hsaf_cci_042.
+    Setup file for esa_cci_sm.
 
     This file was generated with PyScaffold 2.5, a tool that easily
     puts up a scaffold for your new Python project. Learn more under:

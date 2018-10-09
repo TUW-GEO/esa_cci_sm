@@ -4,7 +4,7 @@ Changelog
 
 Version v0.0.X
 ==============
-
+- Homogenize classes for past ESA CCI SM versions
 - Update Readme
 - Change submodule with testdata
 

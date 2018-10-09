@@ -23,16 +23,16 @@ commands:
 
 .. code-block:: shell
 
-  git clone git@github.com:TUW-GEO/hsaf_cci_042.git hsaf_cci_042
-  cd hsaf_cci_042
+  git clone git@github.com:TUW-GEO/esa_cci_sm.git esa_cci_sm
+  cd esa_cci_sm
   conda env create -f environment.yml
-  source activate hsaf_env
+  source activate esa_cci_sm
 
 Supported Products
 ==================
 
 At the moment this package supports ESA CCI soil moisture data version
-v04.2 and v04.3 in netCDF format (reading and time series creation)
+v02.x and v03.x and v04.x in netCDF format (reading and time series creation)
 with a spatial sampling of 0.25 degrees.
 
 Contribute
@@ -47,18 +47,18 @@ Development setup
 
 For Development we also recommend a ``conda`` environment. You can create one
 including test dependencies and debugger by running
-``conda env create -f environment.yml``. This will create a new ``hsaf_env``
-environment which you can activate by using ``source activate hsaf_env``.
+``conda env create -f environment.yml``. This will create a new ``esa_cci_sm``
+environment which you can activate by using ``source activate esa_cci_sm``.
 
 Guidelines
 ----------
 
 If you want to contribute please follow these steps:
 
-- Fork the hsaf_cci_042 repository to your account
+- Fork the esa_cci_sm repository to your account
 - Clone the repository, make sure you use ``git clone --recursive`` to also get
   the test data repository.
-- make a new feature branch from the hsaf_cci_042 master branch
+- make a new feature branch from the esa_cci_sm master branch
 - Add your feature
 - Please include tests for your contributions in one of the test directories.
   We use py.test so a simple function called test_my_feature is enough
