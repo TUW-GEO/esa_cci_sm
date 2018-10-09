@@ -66,6 +66,8 @@ def reshuffle(input_root, outputpath,
     imgbuffer: int, optional
         How many images to read at once before writing time series.
     """
+    if parameters is None:
+
 
     input_dataset = CCI_SM_025Ds(input_root, parameters,
                                              array_1D=True)
@@ -108,10 +110,11 @@ def parse_args(args):
                         help=("Startdate. Either in format YYYY-MM-DD or YYYY-MM-DDTHH:MM."))
     parser.add_argument("end", type=mkdate,
                         help=("Enddate. Either in format YYYY-MM-DD or YYYY-MM-DDTHH:MM."))
-    parser.add_argument("parameters", metavar="parameters",
+    parser.add_argument("parameters", metavar="parameters", default=None,
                         nargs="+",
-                        help=("Parameters to download in numerical format. e.g."
-                              "sm for Volumetric soil water layer"))
+                        help=("Parameters to reshuffle in numerical format. e.g."
+                              "sm for Volumetric soil water layer. If None are passed"
+                              "all variables in the image files are used"))
 
     parser.add_argument("--imgbuffer", type=int, default=50,
                         help=("How many images to read at once. Bigger numbers make the "

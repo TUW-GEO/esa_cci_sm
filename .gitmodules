@@ -2,3 +2,7 @@
 	path = tests/hsaf_cci_042_data
 	url = https://github.com/TUW-GEO/hsaf_cci_042_data.git
 
+[submodule "tests/esa_cci_sm-test-data"]
+	path = tests/esa_cci_sm-test-data
+	url = https://github.com/wpreimes/esa_cci_sm-test-data
+	branch = master
