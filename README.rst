@@ -9,7 +9,7 @@ esa_cci_sm
 .. image:: https://coveralls.io/repos/github/TUW-GEO/esa_cci_sm/badge.svg?branch=master
     :target: https://coveralls.io/github/TUW-GEO/esa_cci_sm?branch=master
 
-.. image:: https://readthedocs.org/projects/hsaf-cci-esa_cci_sm/badge/?version=latest
+.. image:: https://readthedocs.org/projects/esa_cci_sm/badge/?version=latest
     :target: http://esa_cci_sm.readthedocs.io/en/latest/?badge=latest
 
 Reading and reshuffling of CCI soil moisture Written in Python.
