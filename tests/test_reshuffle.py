@@ -13,7 +13,7 @@ def test_reshuffle_v042():
     test for the reshuffle function
     """
     inpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                "hsaf_cci_042_data", "esa_cci_sm_dailyImages", "v04.2", "passive")
+                "esa_cci_sm-test-data", "esa_cci_sm_dailyImages", "v04.2", "passive")
     startdate = "2016-06-06T00:00"
     enddate = "2016-06-07T00:00"
     parameters = ["sm"]
@@ -38,7 +38,7 @@ def test_reshuffle_v033():
     test for the reshuffle function
     """
     inpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                "hsaf_cci_042_data", "esa_cci_sm_dailyImages", "v03.3", "combined")
+                "esa_cci_sm-test-data", "esa_cci_sm_dailyImages", "v03.3", "combined")
     startdate = "2016-01-01T00:00"
     enddate = "2016-01-03T00:00"
     parameters = ["sm"]
@@ -63,7 +63,7 @@ def test_reshuffle_v022():
     test for the reshuffle function
     """
     inpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                          "hsaf_cci_042_data", "esa_cci_sm_dailyImages", "v02.2",
+                          "esa_cci_sm-test-data", "esa_cci_sm_dailyImages", "v02.2",
                           "combined")
     startdate = "2014-01-01T00:00"
     enddate = "2014-01-02T00:00"

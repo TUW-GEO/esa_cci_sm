@@ -13,7 +13,7 @@ def test_CCI_SM_v033_025Ds_img_reading():
     parameter = ['sm']
 
     img_c = CCI_SM_025Ds(
-        data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        data_path=os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "combined"), parameter=parameter,
         array_1D=False)
 
@@ -27,7 +27,7 @@ def test_CCI_SM_v033_025Ds_img_reading():
 
 
     img_a = CCI_SM_025Ds(
-        data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        data_path=os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "active"), parameter=parameter,
         array_1D=False)
 
@@ -41,7 +41,7 @@ def test_CCI_SM_v033_025Ds_img_reading():
 
 
     img_c = CCI_SM_025Ds(
-        data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        data_path=os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "passive"), parameter=parameter,
         array_1D=False)
 
@@ -69,7 +69,7 @@ def test_CCI_SM_v033_025Ds_timestamps_for_daterange():
                        datetime(2016, 1, 1, 18),
                        datetime(2016, 1, 1, 21)]
     img_a = CCI_SM_025Ds(
-        data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        data_path=os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "active"), parameter=parameter,
         array_1D=True)
 
@@ -80,7 +80,7 @@ def test_CCI_SM_v033_025Ds_timestamps_for_daterange():
     assert tstamps_a == should_datetime
 
     img_p = CCI_SM_025Ds(
-        data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        data_path=os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
                                "esa_cci_sm_dailyImages", "v03.3", "passive"),
         parameter=parameter,
         array_1D=True)
@@ -92,7 +92,7 @@ def test_CCI_SM_v033_025Ds_timestamps_for_daterange():
     assert tstamps_p == should_datetime
 
     img_c = CCI_SM_025Ds(
-        data_path=os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        data_path=os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
                                "esa_cci_sm_dailyImages", "v03.3", "combined"),
         parameter=parameter,
         array_1D=True)
@@ -111,7 +111,7 @@ def test_CCI_SM_v033_025Img_img_reading_1D():
 
     parameter = ['sm']
     img_c = CCI_SM_025Img(
-        os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "combined", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-20160101000000-fv03.3.nc"),
         parameter=parameter, array_1D=True)
@@ -128,7 +128,7 @@ def test_CCI_SM_v033_025Img_img_reading_1D():
 
     parameter = ['sm']
     img_a = CCI_SM_025Img(
-        os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "active", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMS-ACTIVE-20160101000000-fv03.3.nc"),
         parameter=parameter, array_1D=True)
@@ -146,7 +146,7 @@ def test_CCI_SM_v033_025Img_img_reading_1D():
 
     parameter = ['sm']
     img_p = CCI_SM_025Img(
-        os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "passive", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-20160101000000-fv03.3.nc"),
         parameter=parameter, array_1D=True)
@@ -165,7 +165,7 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
     """
     parameter = ['sm']
     img_c = CCI_SM_025Img(
-        os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "combined", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-20160101000000-fv03.3.nc"),
         parameter=parameter)
@@ -185,7 +185,7 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
 
     parameter = ['sm']
     img_a = CCI_SM_025Img(
-        os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "active", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMS-ACTIVE-20160101000000-fv03.3.nc"),
         parameter=parameter)
@@ -205,7 +205,7 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
 
     parameter = ['sm']
     img_p = CCI_SM_025Img(
-        os.path.join(os.path.dirname(__file__), "hsaf_cci_042_data",
+        os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "passive", "2016",
         "ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-20160101000000-fv03.3.nc"),
         parameter=parameter)

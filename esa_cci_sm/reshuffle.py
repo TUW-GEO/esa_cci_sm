@@ -67,7 +67,7 @@ def reshuffle(input_root, outputpath,
         How many images to read at once before writing time series.
     """
     if parameters is None:
-
+        pass # todo: use all variables
 
     input_dataset = CCI_SM_025Ds(input_root, parameters,
                                              array_1D=True)
