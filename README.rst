@@ -3,7 +3,7 @@ esa_cci_sm
 ============
 
 
-.. image:: https://travis-ci.org/TUW-GEO/esa_cci_sm.svg?branch=develop
+.. image:: https://travis-ci.org/TUW-GEO/esa_cci_sm.svg?branch=master
     :target: https://travis-ci.org/TUW-GEO/esa_cci_sm
 
 .. image:: https://coveralls.io/repos/github/TUW-GEO/esa_cci_sm/badge.svg?branch=master
