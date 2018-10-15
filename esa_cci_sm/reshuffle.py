@@ -37,7 +37,11 @@ from pygeogrids import BasicGrid
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
 
-import ConfigParser
+try:
+    import ConfigParser as configparser
+except ImportError:
+    import configparser as configparser
+
 from collections import OrderedDict
 
 from netCDF4 import Dataset
@@ -93,12 +97,12 @@ def prod_spec_names(sensortype, subversion, config):
         Product type: active, passive, combined
     subversion : str
         Subversion identifier. eg. '02'
-    config : ConfigParser.ConfigParser
+    config : configparser.configparser
         config parser to replace values in
 
     Returns
     -------
-    config : ConfigParser.ConfigParser
+    config : configparser.configparser
         The updated configuration parser
     '''
 
@@ -155,7 +159,7 @@ def read_metadata(sensortype, version, varnames, subversion):
     var_meta : dict
         Variable meta dicts
     '''
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     metafile = os.path.join(os.path.dirname(__file__), 'metadata',
                             'esa_cci_sm_v0%i.ini' % version)
 
