@@ -7,6 +7,8 @@ import numpy.testing as nptest
 from esa_cci_sm.reshuffle import main
 from esa_cci_sm.interface import CCITs
 
+from netCDF4 import Dataset
+
 
 def test_reshuffle_v042():
     """
@@ -32,6 +34,16 @@ def test_reshuffle_v042():
     nptest.assert_allclose(ts_2d['sm'].values,
                            ts_values_should, rtol=1e-5)
 
+    # metadata check
+    ds = Dataset(os.path.join(ts_path, '2244.nc'))
+    assert ds.getncattr('resolution') == u'0.25 degree'
+    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-4.2'
+
+    assert ds.variables['sm'].getncattr('full_name') == u'Volumetric Soil Moisture'
+    assert ds.variables['sm'].getncattr('units') == u'm3 m-3'
+
+
+
 
 def test_reshuffle_v033():
     """
@@ -56,6 +68,13 @@ def test_reshuffle_v033():
                            ts_values_should, rtol=1e-5)
     nptest.assert_allclose(ts_2d['sm'].values,
                            ts_values_should, rtol=1e-5)
+
+    ds = Dataset(os.path.join(ts_path, '2244.nc'))
+    assert ds.getncattr('resolution') == u'0.25 degree'
+    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-3.3'
+
+    assert ds.variables['sm'].getncattr('full_name') == u'Volumetric Soil Moisture'
+    assert ds.variables['sm'].getncattr('units') == u'm3 m-3'
 
 
 def test_reshuffle_v022():
@@ -83,3 +102,15 @@ def test_reshuffle_v022():
     nptest.assert_allclose(ts_2d['sm'].values,
                            ts_values_should, rtol=1e-5)
 
+
+    ds = Dataset(os.path.join(ts_path, '2244.nc'))
+    assert ds.getncattr('resolution') == u'0.25 degree'
+    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-2.2'
+
+    assert ds.variables['sm'].getncattr('full_name') == u'Volumetric Soil Moisture'
+    assert ds.variables['sm'].getncattr('units') == u'm3 m-3'
+
+
+
+if __name__ == '__main__':
+    test_reshuffle_v033()
