@@ -37,10 +37,7 @@ from pygeogrids import BasicGrid
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
 
-try:
-    import ConfigParser as configparser
-except ImportError:
-    import configparser as configparser
+import configparser
 
 from collections import OrderedDict
 
@@ -120,10 +117,9 @@ def prod_spec_names(sensortype, subversion, config):
 
     sensortype = sensortype.upper()
 
-    product = config.get('GLOBAL', 'product', 0,
-                              {'sensor_abbr':sensor_abbr[sensortype.upper()],
-                               'sensortype':sensortype,
-                               'subversion':subversion})
+    product = config.get('GLOBAL', 'product').format(sensor_abbr=sensor_abbr[sensortype],
+                                                     sensortype=sensortype,
+                                                     subversion=subversion)
 
     config.set('GLOBAL', 'product', product)
 
@@ -159,7 +155,7 @@ def read_metadata(sensortype, version, varnames, subversion):
     var_meta : dict
         Variable meta dicts
     '''
-    config = configparser.ConfigParser()
+    config = configparser.RawConfigParser()
     metafile = os.path.join(os.path.dirname(__file__), 'metadata',
                             'esa_cci_sm_v0%i.ini' % version)
 

@@ -36,7 +36,7 @@ install:
   - pip install pytesmo
   - pip install repurpose
   - pip install parse
-  - pip install ConfigParser
+  - pip install configparser
   - pip install .
   - pip list
   - which pip
