@@ -12,5 +12,6 @@ dependencies:
     - repurpose
     - pytesmo
     - pyresample
+    - parse
 
 
