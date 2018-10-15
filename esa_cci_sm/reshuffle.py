@@ -36,7 +36,6 @@ from datetime import datetime
 from pygeogrids import BasicGrid
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
-from esa_cci_sm.grid import CCI025Cellgrid
 
 import ConfigParser
 from collections import OrderedDict
