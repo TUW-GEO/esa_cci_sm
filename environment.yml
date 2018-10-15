@@ -13,5 +13,6 @@ dependencies:
     - pytesmo
     - pyresample
     - parse
+    - ConfigParser
 
 
