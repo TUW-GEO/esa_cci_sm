@@ -65,6 +65,8 @@ def parse_filename(data_dir):
     -------
     file_args : dict
         Parsed arguments from file name
+    file_vars : list
+        Names of parameters in the first detected file
     '''
     template = '{product}-SOILMOISTURE-L3S-{data_type}-{sensor_type}-' \
                '{datetime}000000-fv{version}.{sub_version}.nc'
@@ -77,8 +79,8 @@ def parse_filename(data_dir):
             else:
                 file_args = file_args.named
                 file_args['datetime'] = '{datetime}'
-                filevars = Dataset(os.path.join(curr,f)).variables.keys()
-                return file_args, filevars
+                file_vars = Dataset(os.path.join(curr,f)).variables.keys()
+                return file_args, file_vars
 
     raise IOError('No file name in passed directory fits to template')
 
