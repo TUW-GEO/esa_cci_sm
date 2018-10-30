@@ -18,7 +18,7 @@ def test_reshuffle_v042():
                 "esa_cci_sm-test-data", "esa_cci_sm_dailyImages", "v04.2", "passive")
     startdate = "2016-06-06T00:00"
     enddate = "2016-06-07T00:00"
-    parameters = ["sm"]
+    parameters = ["--parameters", "sm"]
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters
     main(args)
@@ -53,7 +53,7 @@ def test_reshuffle_v033():
                 "esa_cci_sm-test-data", "esa_cci_sm_dailyImages", "v03.3", "combined")
     startdate = "2016-01-01T00:00"
     enddate = "2016-01-03T00:00"
-    parameters = ["sm"]
+    parameters = ["--parameters", "sm"]
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters
     main(args)
@@ -86,7 +86,7 @@ def test_reshuffle_v022():
                           "combined")
     startdate = "2014-01-01T00:00"
     enddate = "2014-01-02T00:00"
-    parameters = ["sm"]
+    parameters = ["--parameters", "sm"]
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters
     main(args)

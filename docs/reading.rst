@@ -16,7 +16,7 @@ Reading by file name
     # read several parameters
     parameter = ['sm', 'sm_uncertainty']
     # the class is initialized with the exact filename.
-    image_path = os.path.join(os.path.dirname(__file__), 'tests', 'test-data',
+    image_path = os.path.join(os.path.dirname(__file__), 'tests', 'esa_cci_sm-test-data',
                               'esa_cci_sm_dailyImages', 'v04.2', 'combined', '2016')
     image_file = 'ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-20160607000000-fv04.2.nc'
     img = CCI_SM_025Img(os.path.join(image_path, image_file), parameter=parameter)
@@ -39,7 +39,7 @@ The filename is automatically built from the given date.
 
     parameter = 'sm'
     img = CCI_SM_025Ds(data_path=os.path.join(os.path.dirname(__file__),
-                                                    'tests', 'test-data', 'esa_cci_sm_dailyImages',
+                                                    'tests', 'esa_cci_sm-test-data', 'esa_cci_sm_dailyImages',
                                                     'v04.2', 'combined'),
                               parameter=parameter)
 
