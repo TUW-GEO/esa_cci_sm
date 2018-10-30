@@ -1,8 +1,8 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
-source = hsaf_cci_042
-# omit = bad_file.py
+source = esa_cci_sm
+omit = */_version.py
 
 [report]
 # Regexes for lines to exclude from consideration

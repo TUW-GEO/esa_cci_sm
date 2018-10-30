@@ -36,9 +36,9 @@ from datetime import datetime
 from pygeogrids import BasicGrid
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
-from esa_cci_sm.grid import CCI025Cellgrid
 
-import ConfigParser
+import configparser
+
 from collections import OrderedDict
 
 from netCDF4 import Dataset
@@ -65,6 +65,8 @@ def parse_filename(data_dir):
     -------
     file_args : dict
         Parsed arguments from file name
+    file_vars : list
+        Names of parameters in the first detected file
     '''
     template = '{product}-SOILMOISTURE-L3S-{data_type}-{sensor_type}-' \
                '{datetime}000000-fv{version}.{sub_version}.nc'
@@ -77,8 +79,8 @@ def parse_filename(data_dir):
             else:
                 file_args = file_args.named
                 file_args['datetime'] = '{datetime}'
-                filevars = Dataset(os.path.join(curr,f)).variables.keys()
-                return file_args, filevars
+                file_vars = Dataset(os.path.join(curr,f)).variables.keys()
+                return file_args, file_vars
 
     raise IOError('No file name in passed directory fits to template')
 
@@ -94,12 +96,12 @@ def prod_spec_names(sensortype, subversion, config):
         Product type: active, passive, combined
     subversion : str
         Subversion identifier. eg. '02'
-    config : ConfigParser.ConfigParser
+    config : configparser.configparser
         config parser to replace values in
 
     Returns
     -------
-    config : ConfigParser.ConfigParser
+    config : configparser.configparser
         The updated configuration parser
     '''
 
@@ -117,10 +119,9 @@ def prod_spec_names(sensortype, subversion, config):
 
     sensortype = sensortype.upper()
 
-    product = config.get('GLOBAL', 'product', 0,
-                              {'sensor_abbr':sensor_abbr[sensortype.upper()],
-                               'sensortype':sensortype,
-                               'subversion':subversion})
+    product = config.get('GLOBAL', 'product').format(sensor_abbr=sensor_abbr[sensortype],
+                                                     sensortype=sensortype,
+                                                     subversion=subversion)
 
     config.set('GLOBAL', 'product', product)
 
@@ -156,7 +157,7 @@ def read_metadata(sensortype, version, varnames, subversion):
     var_meta : dict
         Variable meta dicts
     '''
-    config = ConfigParser.ConfigParser()
+    config = configparser.RawConfigParser()
     metafile = os.path.join(os.path.dirname(__file__), 'metadata',
                             'esa_cci_sm_v0%i.ini' % version)
 
