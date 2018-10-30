@@ -40,7 +40,7 @@ The filename is automatically built from the given date.
     parameter = 'sm'
     img = CCI_SM_025Ds(data_path=os.path.join(os.path.dirname(__file__),
                                                     'tests', 'test-data', 'esa_cci_sm_dailyImages',
-                                                    'v04.2', 'combined', '2016'),
+                                                    'v04.2', 'combined'),
                               parameter=parameter)
 
     image = img.read(datetime(2016, 6, 7, 0))
