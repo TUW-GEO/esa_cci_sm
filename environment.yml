@@ -6,7 +6,6 @@ dependencies:
   - numpy
   - pandas
   - scipy
-  - pytest=3.8.2
   - pip:
     - pynetcf
     - repurpose
@@ -14,6 +13,5 @@ dependencies:
     - parse
     - configparser
     - pyresample
-    - pytest-cov==2.2.1
 
 
