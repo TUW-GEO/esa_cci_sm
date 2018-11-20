@@ -1,0 +1,10 @@
+netcdf4==1.2.2
+numpy
+pandas
+scipy
+pynetcf
+repurpose
+pytesmo
+parse
+configparser
+pyresample
