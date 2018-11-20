@@ -181,7 +181,7 @@ def read_metadata(sensortype, version, varnames, subversion):
 def reshuffle(input_root, outputpath,
               startdate, enddate,
               parameters=None, ignore_meta=False,
-              imgbuffer=50):
+              imgbuffer=200):
     """
     Reshuffle method applied to ESA CCI SM images.
 
@@ -263,7 +263,7 @@ def parse_args(args):
                         help=("Startdate. Either in format YYYY-MM-DD or YYYY-MM-DDTHH:MM."))
     parser.add_argument("end", type=mkdate,
                         help=("Enddate. Either in format YYYY-MM-DD or YYYY-MM-DDTHH:MM."))
-    parser.add_argument("parameters", metavar="parameters", default=None,
+    parser.add_argument("--parameters", metavar="parameters", default=None,
                         nargs="+",
                         help=("Parameters to reshuffle in numerical format. e.g."
                               "sm for Volumetric soil water layer. If None are passed"
@@ -271,7 +271,7 @@ def parse_args(args):
 
     parser.add_argument("--ignore_meta", type=bool, default=False,
                         help=("Do not apply metadata from ini files to the time series"))
-    parser.add_argument("--imgbuffer", type=int, default=50,
+    parser.add_argument("--imgbuffer", type=int, default=200,
                         help=("How many images to read at once. Bigger numbers make the "
                               "conversion faster but consume more memory."))
     args = parser.parse_args(args)
