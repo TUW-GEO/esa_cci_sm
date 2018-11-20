@@ -30,16 +30,10 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
 
-  #- conda create -q -n test-environment -c conda-forge python=$TRAVIS_PYTHON_VERSION numpy netCDF4=1.2.2 matplotlib basemap pyresample pyproj
   - conda create -n esa_cci_sm python=${TRAVIS_PYTHON_VERSION}
   - source activate esa_cci_sm
   - conda env update -f environment.yml
-  #- pip install pynetcf
-  #- pip install pytesmo
-  #- pip install repurpose
-  #- pip install parse
-  #- pip install configparser
-  #- pip install .
+
   - python setup.py install
   - conda list
   - which pip
