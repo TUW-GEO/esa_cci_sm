@@ -14,5 +14,6 @@ dependencies:
     - parse
     - configparser
     - pyresample
+    - pytest-cov
 
 
