@@ -1,18 +1,21 @@
+# List of conda and pip packages that are should be install when developing the packages
+# To create the full conda environment: conda env create -f environment.yml
 name: esa_cci_sm
 channels:
   - defaults
 dependencies:
-  - python=2.7
   - netcdf4=1.2.2
   - numpy
   - pandas
   - scipy
+  - pytest=3.8.2
   - pip:
     - pynetcf
     - repurpose
     - pytesmo
-    - pyresample
     - parse
     - configparser
+    - pyresample
+    - pytest-cov
 
 
