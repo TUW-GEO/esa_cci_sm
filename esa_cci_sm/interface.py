@@ -1,6 +1,26 @@
 # -*- coding: utf-8 -*-
+# The MIT License (MIT)
+#
+# Copyright (c) 2018 TU Wien
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
-import warnings
 import numpy as np
 import os
 
@@ -10,9 +30,9 @@ from pygeobase.object_base import Image
 from pynetcf.time_series import GriddedNcOrthoMultiTs
 from pygeogrids.netcdf import load_grid
 
-from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 
-from esa_cci_sm.grid import CCI025Cellgrid
+from esa_cci_sm.grid import CCICellGrid
 from netCDF4 import Dataset
 
 class CCI_SM_025Img(ImageBase):
@@ -32,13 +52,14 @@ class CCI_SM_025Img(ImageBase):
         If set then the data is read into 1D arrays. Needed for some legacy code.
     """
 
-    def __init__(self, filename, mode='r', parameter='sm', array_1D=False):
+    def __init__(self, filename, mode='r', parameter='sm', subgrid=None,
+                 array_1D=False):
         super(CCI_SM_025Img, self).__init__(filename, mode=mode)
 
         if type(parameter) != list:
             parameter = [parameter]
         self.parameters = parameter
-        self.grid = CCI025Cellgrid()
+        self.grid = CCICellGrid() if not subgrid else subgrid
         self.array_1D = array_1D
 
     def read(self, timestamp=None):
@@ -69,6 +90,7 @@ class CCI_SM_025Img(ImageBase):
                 # param_data = dataset.variables[parameter][:].flatten()
                 param_data = dataset.variables[parameter][:]
                 param_data = np.flipud(param_data[0,:,:]).flatten()
+                #param_data = param_data[0,:,:].flatten()
                 np.ma.set_fill_value(param_data, 9999)
 
                 return_img.update(
@@ -89,13 +111,13 @@ class CCI_SM_025Img(ImageBase):
             return Image(self.grid.activearrlon, self.grid.activearrlat,
                          return_img, return_metadata, timestamp)
         else:
+            yres, xres = self.grid.shape
             for key in return_img:
-                return_img[key] = np.flipud(
-                    return_img[key].reshape((720, 1440)))
+                return_img[key] = return_img[key].reshape((xres, yres))
 
             return Image(
-                (self.grid.activearrlon.reshape((720, 1440))),
-                np.flipud(self.grid.activearrlat.reshape((720, 1440))),
+                self.grid.activearrlon.reshape((xres, yres)),
+                self.grid.activearrlat.reshape((xres, yres)),
                 return_img,
                 return_metadata,
                 timestamp)
@@ -124,9 +146,10 @@ class CCI_SM_025Ds(MultiTemporalImageBase):
         If set then the data is read into 1D arrays. Needed for some legacy code.
     """
 
-    def __init__(self, data_path, parameter='sm', array_1D=False):
+    def __init__(self, data_path, parameter='sm', subgrid=None, array_1D=False):
 
         ioclass_kws = {'parameter': parameter,
+                       'subgrid': subgrid,
                        'array_1D': array_1D}
 
         sub_path = ['%Y']
@@ -155,20 +178,12 @@ class CCI_SM_025Ds(MultiTemporalImageBase):
             list of datetime objects of each available image between
             start_date and end_date
         """
-        img_offsets = np.array([timedelta(hours=0),
-                                timedelta(hours=3),
-                                timedelta(hours=6),
-                                timedelta(hours=9),
-                                timedelta(hours=12),
-                                timedelta(hours=15),
-                                timedelta(hours=18),
-                                timedelta(hours=21)])
 
-        timestamps = []
-        diff = end_date - start_date
-        for i in range(diff.days + 1):
-            daily_dates = start_date + timedelta(days=i) + img_offsets
-            timestamps.extend(daily_dates.tolist())
+        next = lambda date: date + relativedelta(days=1)
+
+        timestamps = [start_date]
+        while next(timestamps[-1]) <= end_date:
+            timestamps.append(next(timestamps[-1]))
 
         return timestamps
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # The MIT License (MIT)
 #
-# Copyright (c) 2016, TU Wien
+# Copyright (c) 2018 TU Wien
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,9 +33,9 @@ from parse import parse
 
 from datetime import datetime
 
-from pygeogrids import BasicGrid
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
+from esa_cci_sm.grid import CCILandGrid, CCICellGrid
 
 import configparser
 
@@ -43,6 +43,12 @@ from collections import OrderedDict
 
 from netCDF4 import Dataset
 
+
+def str2bool(val):
+    if val in ['True', 'true', 't', 'T', '1']:
+        return True
+    else:
+        return False
 
 def mkdate(datestring):
     if len(datestring) == 10:
@@ -180,7 +186,7 @@ def read_metadata(sensortype, version, varnames, subversion):
 
 def reshuffle(input_root, outputpath,
               startdate, enddate,
-              parameters=None, ignore_meta=False,
+              parameters=None, land_points=True, ignore_meta=False,
               imgbuffer=200):
     """
     Reshuffle method applied to ESA CCI SM images.
@@ -199,9 +205,17 @@ def reshuffle(input_root, outputpath,
         parameters to read and convert
         If none are passed, we read an image in the root path and use vars from
         the image.
+    land_points : bool, optional (default: True)
+        Use the land grid to calculate time series on.
+        Leads to faster processing and smaller files.
     imgbuffer: int, optional
         How many images to read at once before writing time series.
     """
+    if land_points:
+        grid = CCILandGrid()
+    else:
+        grid = CCICellGrid()
+
 
     if not os.path.exists(outputpath):
         os.makedirs(outputpath)
@@ -211,11 +225,8 @@ def reshuffle(input_root, outputpath,
     if parameters is None:
         parameters = [p for p in file_vars if p not in ['lat', 'lon', 'time']]
 
-    input_dataset = CCI_SM_025Ds(input_root, parameters,
-                                             array_1D=True)
-
-    data = input_dataset.read(startdate)
-    grid = BasicGrid(data.lon, data.lat)
+    input_dataset = CCI_SM_025Ds(data_path=input_root, parameter=parameters,
+                                 subgrid=grid, array_1D=True)
 
     if not ignore_meta:
         global_attr, ts_attributes = read_metadata(sensortype=file_args['sensor_type'],
@@ -228,13 +239,10 @@ def reshuffle(input_root, outputpath,
 
 
     reshuffler = Img2Ts(input_dataset=input_dataset, outputpath=outputpath,
-                        startdate=startdate, enddate=enddate,
-                        input_grid=grid,
+                        startdate=startdate, enddate=enddate, input_grid=grid,
                         imgbuffer=imgbuffer, cellsize_lat=5.0, cellsize_lon=5.0,
-                        global_attr=global_attr,
-                        zlib=True,
-                        unlim_chunksize=1000,
-                        ts_attributes=ts_attributes)
+                        global_attr=global_attr, zlib=True,
+                        unlim_chunksize=1000, ts_attributes=ts_attributes)
     reshuffler.calc()
 
 
@@ -269,7 +277,10 @@ def parse_args(args):
                               "sm for Volumetric soil water layer. If None are passed"
                               "all variables in the image files are used"))
 
-    parser.add_argument("--ignore_meta", type=bool, default=False,
+    parser.add_argument("--land_points", type=str2bool, default='False',
+                        help=("Set True to convert only land points as defined"
+                              " in the SMECV-grid land mask (faster and less/smaller files)"))
+    parser.add_argument("--ignore_meta", type=str2bool, default='False',
                         help=("Do not apply metadata from ini files to the time series"))
     parser.add_argument("--imgbuffer", type=int, default=200,
                         help=("How many images to read at once. Bigger numbers make the "
@@ -291,16 +302,10 @@ def main(args):
               args.start,
               args.end,
               args.parameters,
+              land_points=args.land_points,
+              ignore_meta=args.ignore_meta,
               imgbuffer=args.imgbuffer)
 
 
 def run():
     main(sys.argv[1:])
-
-if __name__ == '__main__':
-    inroot = r'H:\code\esa_cci_sm\tests\esa_cci_sm-test-data\esa_cci_sm_dailyImages\v04.2\combined'
-    outpath = r'C:\Temp\ts'
-    reshuffle(inroot, outpath,
-              datetime(2016,6,7), datetime(2016,6,8),
-              None, ignore_meta=False,
-              imgbuffer=50)
