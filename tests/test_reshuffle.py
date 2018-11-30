@@ -19,11 +19,13 @@ def test_reshuffle_v042():
     startdate = "2016-06-06T00:00"
     enddate = "2016-06-07T00:00"
     parameters = ["--parameters", "sm"]
+    land_points = ["--land_points", "True"]
+
     ts_path = tempfile.mkdtemp()
-    args = [inpath, ts_path, startdate, enddate] + parameters
+    args = [inpath, ts_path, startdate, enddate] + parameters + land_points
     main(args)
     ds = CCITs(ts_path)
-    assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 2593
+    assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 1002
     assert ds.grid.find_nearest_gpi(-179.875, 68.375)[0] == 911520
     ts_1d = ds.read(911520)
     ts_2d = ds.read(-179.875, 68.375)  # 0031.nc
@@ -54,8 +56,10 @@ def test_reshuffle_v033():
     startdate = "2016-01-01T00:00"
     enddate = "2016-01-03T00:00"
     parameters = ["--parameters", "sm"]
+    land_points = ['--land_points', 'False']
+
     ts_path = tempfile.mkdtemp()
-    args = [inpath, ts_path, startdate, enddate] + parameters
+    args = [inpath, ts_path, startdate, enddate] + parameters + land_points
     main(args)
     ds = CCITs(ts_path)
     assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 2593
@@ -87,11 +91,13 @@ def test_reshuffle_v022():
     startdate = "2014-01-01T00:00"
     enddate = "2014-01-02T00:00"
     parameters = ["--parameters", "sm"]
+    land_points = ['--land_points', 'True']
+
     ts_path = tempfile.mkdtemp()
-    args = [inpath, ts_path, startdate, enddate] + parameters
+    args = [inpath, ts_path, startdate, enddate] + parameters + land_points
     main(args)
     ds = CCITs(ts_path)
-    assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 2593
+    assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 1002
     assert ds.grid.find_nearest_gpi(-6.625, 21.625)[0] == 642933
     ts_1d = ds.read(642933)
     ts_2d = ds.read(-6.625, 21.625) # 0031.nc
@@ -113,4 +119,4 @@ def test_reshuffle_v022():
 
 
 if __name__ == '__main__':
-    test_reshuffle_v033()
+    test_reshuffle_v042()
