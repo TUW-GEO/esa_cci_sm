@@ -12,3 +12,4 @@ pytesmo
 parse
 configparser
 pyresample
+smecv-grid
