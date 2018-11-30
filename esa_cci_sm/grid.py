@@ -1,17 +1,9 @@
-import numpy as np
+# -*- coding: utf-8 -*-
 
-from pygeogrids.grids import BasicGrid
+from smecv_grid.grid import SMECV_Grid_v042
 
+def CCICellGrid():
+    return SMECV_Grid_v042(None)
 
-def CCI025Cellgrid():
-    """
-    Class for the CCI SM 0.25deg cell grid.
-    """
-
-    resolution = 0.25
-
-    lon, lat = np.meshgrid(
-        np.arange(-180 + resolution/2, 180 + resolution/2, resolution),
-        np.arange(-90 + resolution/2, 90 + resolution/2, resolution))
-
-    return BasicGrid(lon.flatten(), lat.flatten()).to_cell_grid(cellsize=5.)
+def CCILandGrid():
+    return SMECV_Grid_v042('land')

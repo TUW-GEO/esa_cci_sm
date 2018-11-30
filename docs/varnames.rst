@@ -3,8 +3,6 @@ Variable names for ESA CCI Soil Moisture
 
 ESA CCI SM variables as in the netcdf image files (and time series from netcdf images) for different products and versions
 
-* Combined Product
-
 +----------------+--------------------------------------+----------------------------------------+
 | short_name     | Parameter                            |  Units                                 |
 +================+======================================+========================================+
@@ -12,7 +10,7 @@ ESA CCI SM variables as in the netcdf image files (and time series from netcdf i
 +----------------+--------------------------------------+----------------------------------------+
 | flag           | Flag                                 |                                        |
 +----------------+--------------------------------------+----------------------------------------+
-| freqbandID     | Frequency Band Identification        |                                        |
+| freqbandID*    | Frequency Band Identification        |                                        |
 +----------------+--------------------------------------+----------------------------------------+
 | lat            | Latitude                             | [degrees_north]                        |
 +----------------+--------------------------------------+----------------------------------------+
@@ -22,11 +20,13 @@ ESA CCI SM variables as in the netcdf image files (and time series from netcdf i
 +----------------+--------------------------------------+----------------------------------------+
 | sensor         | Sensor Flag                          |                                        |
 +----------------+--------------------------------------+----------------------------------------+
-| sm             | Volumetric Soil Moisture             | [m3 m-3"]                              |
+| sm             | Volumetric Soil Moisture             | [m3 m-3]                               |
 +----------------+--------------------------------------+----------------------------------------+
-| sm_uncertainty | Volumetric Soil Moisture Uncertainty | [m3 m-3"]                              |
+| sm_uncertainty | Volumetric Soil Moisture Uncertainty | [m3 m-3]                               |
 +----------------+--------------------------------------+----------------------------------------+
-| t0             | Observation Timestamp                | ["days since 1970-01-01 00:00:00 UTC"] |
+| t0             | Observation Timestamp                | [days since 1970-01-01 00:00:00 UTC]   |
 +----------------+--------------------------------------+----------------------------------------+
-| time           | Time                                 | ["days since 1970-01-01 00:00:00 UTC"] |
+| time           | Time                                 | [days since 1970-01-01 00:00:00 UTC]   |
 +----------------+--------------------------------------+----------------------------------------+
+
+* "freqbandID" is named "freqband" in older versions (before v3) of the data set.

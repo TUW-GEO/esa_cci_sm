@@ -8,7 +8,6 @@ dependencies:
   - numpy
   - pandas
   - scipy
-  - pytest=3.8.2
   - pip:
     - pynetcf
     - repurpose
@@ -17,5 +16,4 @@ dependencies:
     - configparser
     - pyresample
     - pytest-cov
-
-
+    - smecv-grid

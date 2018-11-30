@@ -13,7 +13,7 @@ methods. We have chosen to do it in the following way:
   `Orthogonal multidimensional array representation
   <http://cfconventions.org/cf-conventions/v1.6.0/cf-conventions.html#_orthogonal_multidimensional_array_representation>`_
 - Store the time series in 5x5 degree cells. This means there will be 2566 cell
-  files (without reduction to land points) and a file called ``grid.nc``
+  files (1001 with reduction to land points) and a file called ``grid.nc``
   which contains the information about which grid point is stored in which file.
   This allows us to read a whole 5x5 degree area into memory and iterate over the time series quickly.
 
@@ -25,10 +25,10 @@ program. An example would be:
 
 .. code-block:: shell
 
-   ccism_reshuffle /cci_images /timeseries/data 2000-01-01 2001-01-01 sm sm_uncertainty
+   ccism_reshuffle /cci_images /timeseries/data 2000-01-01 2001-01-02 --parameters sm sm_uncertainty --land_points True
 
-Which would take ESA CCI SM data stored in ``/cci_images`` from January 1st
-2000 to January 1st 2001 and store the parameters for soil moisture and its uncertainty as time
+Which would take ESA CCI SM data stored in ``/cci_images`` over land from January 1st
+2000 to January 2nd 2001 and store the parameters for soil moisture and its uncertainty as time
 series in the folder ``/timeseries/data``.
 
 Conversion to time series is performed by the `repurpose package
@@ -48,6 +48,6 @@ For reading the data the ``ccism_reshuffle`` command produces the class
     from esa_cci_sm.interface import CCITs
     ds = CCITs(ts_path)
     # read_ts takes either lon, lat coordinates or a grid point indices.
-    # and returns a pandas.DataFrame
+    # and returns a pandas.DataFrame with all reshuffled variables.
 	# e.g. timeseries for lon=45°, lat=15°:
     ts = ds.read_ts(45, 15)
