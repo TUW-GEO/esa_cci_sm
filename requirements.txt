@@ -2,14 +2,14 @@
 # Add your requirements here like:
 # numpy
 # scipy>=0.9
-netcdf4==1.2.2
 numpy
 pandas
-scipy
-pynetcf
-repurpose
-pytesmo
-parse
+pygeobase
+netcdf4==1.2.2
 configparser
 pyresample
-smecv-grid
+repurpose
+pynetcf
+repurpose
+parse
+smecv_grid

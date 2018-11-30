@@ -1,0 +1,6 @@
+mock
+numpy
+pygeobase
+datedown
+trollsift
+sphinx==1.6.6
