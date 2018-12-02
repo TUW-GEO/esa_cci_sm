@@ -2,10 +2,11 @@
 Changelog
 =========
 
-Version v0.0.X
+Version v0.1
 ==============
+- pypi release
 - Homogenize classes for past ESA CCI SM versions
-- Update Readme
+- Update Readme and Documentation
 - Change submodule with testdata
 
 Version v0.0.2
