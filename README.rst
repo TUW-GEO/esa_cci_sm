@@ -20,6 +20,7 @@ Installation
 Installing the package can be done via pip:
 
 .. code-block:: shell
+
     pip install esa_cci_sm
 
 Setup of a complete development environment with `conda
