@@ -3,9 +3,9 @@
 # numpy
 # scipy>=0.9
 numpy
+netCDF4<=1.2.8
 pandas
 pygeobase
-netcdf4==1.2.2
 configparser
 pyresample
 repurpose

@@ -17,7 +17,12 @@ Reading and reshuffling of CCI soil moisture Written in Python.
 Installation
 ============
 
-Setup of a complete environment with `conda
+Installing the package can be done via pip:
+
+.. code-block:: shell
+    pip install esa_cci_sm
+
+Setup of a complete development environment with `conda
 <http://conda.pydata.org/miniconda.html>`_ can be performed using the following
 commands:
 
