@@ -1,5 +1,6 @@
 mock
 numpy
+Cython
 pygeobase
 datedown
 trollsift
