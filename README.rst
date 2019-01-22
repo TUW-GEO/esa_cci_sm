@@ -51,13 +51,6 @@ We are happy if you want to contribute. Please raise an issue explaining what
 is missing or if you find a bug. We will also gladly accept pull requests
 against our master branch for new features or bug fixes.
 
-Development setup
------------------
-
-For Development we also recommend a ``conda`` environment. You can create one
-including test dependencies and debugger by running
-``conda env create -f environment.yml``. This will create a new ``esa_cci_sm``
-environment which you can activate by using ``source activate esa_cci_sm``.
 
 Guidelines
 ----------
