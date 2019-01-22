@@ -18,13 +18,14 @@ def test_reshuffle_v042():
                 "esa_cci_sm-test-data", "esa_cci_sm_dailyImages", "v04.2", "passive")
     startdate = "2016-06-06T00:00"
     enddate = "2016-06-07T00:00"
-    parameters = ["--parameters", "sm"]
+    parameters = ["--parameters", "sm", "sm_uncertainty"]
     land_points = ["--land_points", "True"]
 
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters + land_points
     main(args)
-    ds = CCITs(ts_path)
+
+    ds = CCITs(ts_path,  parameters=['sm'], ioclass_kws={'read_bulk': True, 'read_dates': False})
     assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 1002
     assert ds.grid.find_nearest_gpi(-179.875, 68.375)[0] == 911520
     ts_1d = ds.read(911520)
@@ -55,13 +56,13 @@ def test_reshuffle_v033():
                 "esa_cci_sm-test-data", "esa_cci_sm_dailyImages", "v03.3", "combined")
     startdate = "2016-01-01T00:00"
     enddate = "2016-01-03T00:00"
-    parameters = ["--parameters", "sm"]
+    parameters = ["--parameters", "sm", "sm_uncertainty"]
     land_points = ['--land_points', 'False']
 
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters + land_points
     main(args)
-    ds = CCITs(ts_path)
+    ds = CCITs(ts_path,  parameters=['sm'], ioclass_kws={'read_bulk': True, 'read_dates': False})
     assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 2593
     assert ds.grid.find_nearest_gpi(-6.625, 39.125)[0] == 743733
     ts_1d = ds.read(743733)
@@ -96,7 +97,7 @@ def test_reshuffle_v022():
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters + land_points
     main(args)
-    ds = CCITs(ts_path)
+    ds = CCITs(ts_path,  parameters=['sm'])#, ioclass_kws={'read_bulk': True, 'read_dates': False})
     assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 1002
     assert ds.grid.find_nearest_gpi(-6.625, 21.625)[0] == 642933
     ts_1d = ds.read(642933)
@@ -119,4 +120,5 @@ def test_reshuffle_v022():
 
 
 if __name__ == '__main__':
-    test_reshuffle_v042()
+
+    test_reshuffle_v022()
