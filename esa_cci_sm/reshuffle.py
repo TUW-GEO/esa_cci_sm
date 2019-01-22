@@ -36,12 +36,14 @@ from datetime import datetime
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
 from esa_cci_sm.grid import CCILandGrid, CCICellGrid
+from pygeogrids.grids import BasicGrid
 
 import configparser
 
 from collections import OrderedDict
 
 from netCDF4 import Dataset
+import numpy as np
 
 
 def str2bool(val):
@@ -216,6 +218,16 @@ def reshuffle(input_root, outputpath,
     else:
         grid = CCICellGrid()
 
+    gpis, lons, lats, cells = grid.get_grid_points()
+    grid_vars = {'gpis': gpis, 'lons':lons, 'lats':lats}
+    # repurpose cannot handle masked arrays
+    for k, v in grid_vars.items(): # type v: np.ma.MaskedArray
+        if isinstance(v, np.ma.MaskedArray):
+            grid_vars[k] = v.filled()
+
+    grid = BasicGrid(lon=grid_vars['lons'], lat=grid_vars['lats'], gpis=grid_vars['gpis']).to_cell_grid(5.)
+
+
 
     if not os.path.exists(outputpath):
         os.makedirs(outputpath)
@@ -309,3 +321,4 @@ def main(args):
 
 def run():
     main(sys.argv[1:])
+
