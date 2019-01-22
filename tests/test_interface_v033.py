@@ -20,34 +20,35 @@ def test_CCI_SM_v033_025Ds_img_reading():
 
     assert sorted(image_c.data.keys()) == sorted(parameter)
     assert image_c.timestamp == datetime(2016, 1, 1, 0)
-    nptest.assert_almost_equal(image_c.data['sm'][273, 693], 0.142998, 5)
+
+    assert abs(image_c.data['sm'][273, 693] - 0.142998) <= 1e-5
     assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
+
 
     data_path = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
         "esa_cci_sm_dailyImages", "v03.3", "active")
     img_a = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
                          array_1D=False)
-
-
     image_a = img_a.read(datetime(2016, 1, 1, 0))
 
     assert sorted(image_a.data.keys()) == sorted(parameter)
     assert image_a.timestamp == datetime(2016, 1, 1, 0)
-    nptest.assert_almost_equal(image_a.data['sm'][273, 693], 18.92771, 5)
-    assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
+    assert abs(image_a.data['sm'][273, 693] - 18.92771) <= 1e-5
+    assert image_a.lon.shape == image_a.lat.shape == (720, 1440)
 
 
     data_path = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
                 "esa_cci_sm_dailyImages", "v03.3", "passive")
-    img_c = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
+    img_p = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
                          array_1D=False)
 
-    image_c = img_c.read(datetime(2016, 1, 1, 0))
+    image_p = img_p.read(datetime(2016, 1, 1, 0))
 
-    assert sorted(image_c.data.keys()) == sorted(parameter)
-    assert image_c.timestamp == datetime(2016, 1, 1, 0)
-    nptest.assert_almost_equal(image_c.data['sm'][273, 693], 0.0700, 5)
-    assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
+    assert sorted(image_p.data.keys()) == sorted(parameter)
+    assert image_p.timestamp == datetime(2016, 1, 1, 0)
+    assert abs(image_p.data['sm'][273, 693] - 0.0700) <= 1e-5
+
+    assert image_p.lon.shape == image_p.lat.shape == (720, 1440)
 
 
 
@@ -243,7 +244,7 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
     assert image_c.lon[0, 1439] == 179.875
     assert image_c.lat[0, 0] == 89.875
     assert image_c.lat[719, 0] == -89.875
-    nptest.assert_almost_equal(image_c.data['sm'][203, 693], 0.23484, 5)
+    assert abs(image_c.data['sm'][203, 693] - 0.23484) <= 1e-5
     assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
 
 
@@ -263,7 +264,7 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
     assert image_a.lon[0, 1439] == 179.875
     assert image_a.lat[0, 0] == 89.875
     assert image_a.lat[719, 0] == -89.875
-    nptest.assert_almost_equal(image_a.data['sm'][203, 693], 67.70157, 5)
+    assert abs(image_a.data['sm'][203, 693] - 67.70157) <= 1e-5
     assert image_a.lon.shape == image_a.lat.shape == (720, 1440)
 
 
@@ -283,7 +284,7 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
     assert image_p.lon[0, 1439] == 179.875
     assert image_p.lat[0, 0] == 89.875
     assert image_p.lat[719, 0] == -89.875
-    nptest.assert_almost_equal(image_p.data['sm'][203, 693], 0.322685, 5)
+    assert abs(image_p.data['sm'][203, 693] - 0.322685) <= 1e-5
     assert image_p.lon.shape == image_p.lat.shape == (720, 1440)
 
 if __name__ == '__main__':
