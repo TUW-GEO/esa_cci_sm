@@ -2,6 +2,16 @@
 Changelog
 =========
 
+Version v0.x
+==============
+-
+
+Version v0.1.1
+==============
+- Update time series reader class
+- Unmask smecv grid
+- Separate libnetcdf version for python3
+
 Version v0.1
 ==============
 - pypi release
