@@ -14,3 +14,4 @@ dependencies:
     - parse
     - configparser
     - smecv-grid
+    - more_itertools
