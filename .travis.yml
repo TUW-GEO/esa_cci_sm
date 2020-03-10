@@ -18,24 +18,10 @@ install:
   # conda line below will keep everything up-to-date.  We do this
   # conditionally because it saves us some downloading if the version is
   # the same.
-  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-      wget http://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-    fi
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
+  - bash install.sh -d -p $TRAVIS_PYTHON_VERSION -n esa_cci_sm --conda_root $HOME/miniconda
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
-  - conda update -n base conda
-  # Useful for debugging any issues with conda
 
-  - conda create -n esa_cci_sm python=${TRAVIS_PYTHON_VERSION}
-  - conda env update -n esa_cci_sm -f environment.yml
-  - source activate esa_cci_sm
-
-  - python setup.py install
-  -
   - conda info -a
   - conda list
   - pip list
