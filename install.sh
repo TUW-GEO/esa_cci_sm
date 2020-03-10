@@ -28,9 +28,11 @@ function setup()
   local __name=$2
   local __develop=$3
 
-  conda create -n $__name python=$__py_vers --yes
+  conda config --set always_yes yes
+
+  conda create -n $__name python=$__py_vers
   conda activate $__name
-  conda env update -f environment.yml -n $__name --yes
+  conda env update -f environment.yml -n $__name
 
   if [[ $__develop -eq 0 ]]; then
     echo "Installing package..."
@@ -39,6 +41,8 @@ function setup()
     echo "Installing package in development mode..."
     python setup.py develop
   fi;
+
+ conda config --set always_yes no
 
  }
 
