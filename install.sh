@@ -17,6 +17,7 @@ function install_conda()
   wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh;
   bash  /tmp/miniconda.sh -b -p $__conda_root/miniconda;
   export PATH="$__conda_root/miniconda/bin:$PATH";
+  conda config --set always_yes yes
   conda update -q conda;
   conda info;
   source $conda_root/miniconda/etc/profile.d/conda.sh
@@ -28,7 +29,6 @@ function setup()
   local __name=$2
   local __develop=$3
 
-  conda config --set always_yes yes
 
   conda create -n $__name python=$__py_vers
   conda activate $__name
