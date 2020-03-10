@@ -30,7 +30,7 @@ function setup()
 
   conda create -n $__name python=$__py_vers --yes
   conda activate $__name
-  conda env update -f environment.yml -n $__name
+  conda env update -f environment.yml -n $__name --yes
 
   if [[ $__develop -eq 0 ]]; then
     echo "Installing package..."
