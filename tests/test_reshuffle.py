@@ -10,6 +10,42 @@ from esa_cci_sm.interface import CCITs
 from netCDF4 import Dataset
 
 
+
+def test_reshuffle_v052():
+    """
+    test for the reshuffle function
+    """
+    inpath = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                "esa_cci_sm-test-data", "esa_cci_sm_dailyImages", "v05.2", "combined")
+    startdate = "2016-06-07T00:00"
+    enddate = "2016-06-08T00:00"
+    parameters = ["--parameters", "sm", "sm_uncertainty", "flag"]
+    land_points = ["--land_points", "True"]
+
+    ts_path = tempfile.mkdtemp()
+    args = [inpath, ts_path, startdate, enddate] + parameters + land_points
+    main(args)
+
+    ds = CCITs(ts_path,  parameters=['sm'], ioclass_kws={'read_bulk': True, 'read_dates': False})
+    assert len(glob.glob(os.path.join(ts_path, "*.nc"))) == 1002
+    assert ds.grid.find_nearest_gpi(-179.875, 68.875)[0] == 914400
+    ts_1d = ds.read(914400)
+    ts_2d = ds.read(-179.875, 68.875)  # 0031.nc
+    ts_values_should = np.array([0.178790, 0.160327],
+                                dtype=np.float32)
+    nptest.assert_allclose(ts_1d['sm'].values,
+                           ts_values_should, rtol=1e-5)
+    nptest.assert_allclose(ts_2d['sm'].values,
+                           ts_values_should, rtol=1e-5)
+
+    # metadata check
+    ds = Dataset(os.path.join(ts_path, '2244.nc'))
+    assert ds.getncattr('resolution') == u'0.25 degree'
+    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-5.x.x'
+
+    assert ds.variables['sm'].getncattr('full_name') == u'Volumetric Soil Moisture'
+    assert ds.variables['sm'].getncattr('units') == u'm3 m-3'
+
 def test_reshuffle_v042():
     """
     test for the reshuffle function
@@ -40,7 +76,7 @@ def test_reshuffle_v042():
     # metadata check
     ds = Dataset(os.path.join(ts_path, '2244.nc'))
     assert ds.getncattr('resolution') == u'0.25 degree'
-    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-4.2'
+    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-4.x.x'
 
     assert ds.variables['sm'].getncattr('full_name') == u'Volumetric Soil Moisture'
     assert ds.variables['sm'].getncattr('units') == u'm3 m-3'
@@ -76,7 +112,7 @@ def test_reshuffle_v033():
 
     ds = Dataset(os.path.join(ts_path, '2244.nc'))
     assert ds.getncattr('resolution') == u'0.25 degree'
-    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-3.3'
+    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-3.x.x'
 
     assert ds.variables['sm'].getncattr('full_name') == u'Volumetric Soil Moisture'
     assert ds.variables['sm'].getncattr('units') == u'm3 m-3'
@@ -112,7 +148,7 @@ def test_reshuffle_v022():
 
     ds = Dataset(os.path.join(ts_path, '2244.nc'))
     assert ds.getncattr('resolution') == u'0.25 degree'
-    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-2.2'
+    assert ds.getncattr('product') == u'ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-2.x.x'
 
     assert ds.variables['sm'].getncattr('full_name') == u'Volumetric Soil Moisture'
     assert ds.variables['sm'].getncattr('units') == u'm3 m-3'
@@ -121,4 +157,4 @@ def test_reshuffle_v022():
 
 if __name__ == '__main__':
 
-    test_reshuffle_v022()
+    test_reshuffle_v052()

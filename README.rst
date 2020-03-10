@@ -41,7 +41,7 @@ Supported Products
 ==================
 
 At the moment this package supports ESA CCI soil moisture data version
-v02.x and v03.x and v04.x in netCDF format (reading and time series creation)
+v02.x, v03.x, v04.x and v05.x in netCDF format (reading and time series creation)
 with a spatial sampling of 0.25 degrees.
 
 Contribute

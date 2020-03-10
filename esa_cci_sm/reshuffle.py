@@ -94,7 +94,7 @@ def parse_filename(data_dir):
 
 
 
-def prod_spec_names(sensortype, subversion, config):
+def prod_spec_names(sensortype, config):
     '''
     Get specific names for sensortype version
 
@@ -102,8 +102,6 @@ def prod_spec_names(sensortype, subversion, config):
     ----------
     sensortype str
         Product type: active, passive, combined
-    subversion : str
-        Subversion identifier. eg. '02'
     config : configparser.configparser
         config parser to replace values in
 
@@ -127,12 +125,6 @@ def prod_spec_names(sensortype, subversion, config):
 
     sensortype = sensortype.upper()
 
-    product = config.get('GLOBAL', 'product').format(sensor_abbr=sensor_abbr[sensortype],
-                                                     sensortype=sensortype,
-                                                     subversion=subversion)
-
-    config.set('GLOBAL', 'product', product)
-
     config.set('SM', 'full_name', sm_full_name_dict[sensortype])
     config.set('SM', 'units', sm_units_dict[sensortype])
 
@@ -143,7 +135,7 @@ def prod_spec_names(sensortype, subversion, config):
     return config
 
 
-def read_metadata(sensortype, version, varnames, subversion):
+def read_metadata(sensortype, version, varnames):
     '''
     Read metadata dictionaries from the according ini file
 
@@ -155,8 +147,6 @@ def read_metadata(sensortype, version, varnames, subversion):
         ESA CCI SM main version (eg. 2 or 3 or 4)
     varnames : list
         List of variables to read metadata for.
-    subversion : str
-        Subversion identifier. eg. '02'
 
     Returns
     -------
@@ -167,14 +157,15 @@ def read_metadata(sensortype, version, varnames, subversion):
     '''
     config = configparser.RawConfigParser()
     metafile = os.path.join(os.path.dirname(__file__), 'metadata',
-                            'esa_cci_sm_v0%i.ini' % version)
+                            'esa_cci_sm_v0{}_{}.ini'.format(version,
+                                                            sensortype.upper()))
 
     if not os.path.isfile(metafile):
         raise ValueError(metafile, 'Meta data file does not exist')
 
     config.read(metafile)
 
-    config = prod_spec_names(sensortype, subversion, config)
+    config = prod_spec_names(sensortype, config)
 
     global_meta = OrderedDict(config.items('GLOBAL'))
 
@@ -225,9 +216,8 @@ def reshuffle(input_root, outputpath,
         if isinstance(v, np.ma.MaskedArray):
             grid_vars[k] = v.filled()
 
-    grid = BasicGrid(lon=grid_vars['lons'], lat=grid_vars['lats'], gpis=grid_vars['gpis']).to_cell_grid(5.)
-
-
+    grid = BasicGrid(lon=grid_vars['lons'], lat=grid_vars['lats'],
+                     gpis=grid_vars['gpis']).to_cell_grid(5.)
 
     if not os.path.exists(outputpath):
         os.makedirs(outputpath)
@@ -243,8 +233,7 @@ def reshuffle(input_root, outputpath,
     if not ignore_meta:
         global_attr, ts_attributes = read_metadata(sensortype=file_args['sensor_type'],
                                                    version=int(file_args['version']),
-                                                   varnames=parameters,
-                                                   subversion=file_args['sub_version'])
+                                                   varnames=parameters)
     else:
         global_attr = {'product' : 'ESA CCI SM'}
         ts_attributes = None
