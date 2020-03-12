@@ -13,14 +13,18 @@ python:
   - "2.7"
   - "3.6"
   - "3.7"
+  - "3.8"
 install:
   # You may want to periodically update this, although the conda update
   # conda line below will keep everything up-to-date.  We do this
   # conditionally because it saves us some downloading if the version is
   # the same.
   - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-  - bash install.sh -d -p $TRAVIS_PYTHON_VERSION -n esa_cci_sm
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
+  # install esa_cci_sm package in development mode
+  - bash install.sh -d -p $TRAVIS_PYTHON_VERSION -n esa_cci_sm
   - conda info -a
   - conda list
   - pip list
