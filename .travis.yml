@@ -18,10 +18,9 @@ install:
   # conda line below will keep everything up-to-date.  We do this
   # conditionally because it saves us some downloading if the version is
   # the same.
-  - bash install.sh -d -p $TRAVIS_PYTHON_VERSION -n esa_cci_sm --conda_root $HOME/miniconda
+  - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash install.sh -d -p $TRAVIS_PYTHON_VERSION -n esa_cci_sm
   - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-
   - conda info -a
   - conda list
   - pip list
