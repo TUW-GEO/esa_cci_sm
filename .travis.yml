@@ -23,9 +23,11 @@ install:
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
   # install esa_cci_sm package in development mode
   - bash install.sh -d -p $TRAVIS_PYTHON_VERSION -n esa_cci_sm
-  - conda info -a
   - conda list
   - pip list
   - which pip
