@@ -15,5 +15,5 @@ dependencies:
     - repurpose
     - parse
     - configparser
-    - smecv-grid
+    - smecv-grid>=0.2.1
     - more_itertools
