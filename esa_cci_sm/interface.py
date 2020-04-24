@@ -52,13 +52,12 @@ class CCI_SM_025Img(ImageBase):
         If set then the data is read into 1D arrays. Needed for some legacy code.
     """
 
-    def __init__(self, filename, mode='r', parameter='sm', subgrid=None,
+    def __init__(self, filename, mode='r', parameter=None, subgrid=None,
                  array_1D=False):
+
         super(CCI_SM_025Img, self).__init__(filename, mode=mode)
 
-        if type(parameter) != list:
-            parameter = [parameter]
-        self.parameters = parameter
+        self.parameters = [parameter] if isinstance(parameter, str) else parameter
         self.grid = CCICellGrid() if not subgrid else subgrid
         self.array_1D = array_1D
 
@@ -71,29 +70,28 @@ class CCI_SM_025Img(ImageBase):
             dataset = Dataset(self.filename)
         except IOError as e:
             print(e)
-            print(" ".join([self.filename, "can not be opened"]))
+            print("{}: Cannot open file".format(self.filename))
             raise e
 
-        param_names = []
-        for parameter in self.parameters:
-            param_names.append(parameter)
+        if self.parameters is None:
+            param_names = [p for p in dataset.variables.keys() if p not in ['time', 'lat', 'lon']]
+        else:
+            param_names = self.parameters
 
         for parameter, variable in dataset.variables.items():
             if parameter in param_names:
                 param_metadata = {}
-                param_data = {}
                 for attrname in variable.ncattrs():
-                    if attrname in ['long_name', 'units']:
-                        param_metadata.update(
-                            {str(attrname): getattr(variable, attrname)})
+                    param_metadata.update(
+                        {str(attrname): getattr(variable, attrname)})
 
-                # param_data = dataset.variables[parameter][:].flatten()
-                dataset.set_auto_mask(False)
-                dataset.set_auto_scale(True)
                 param_data = dataset.variables[parameter][:]
                 param_data = np.flipud(param_data[0,:,:]).flatten()
-                #param_data = param_data[0,:,:].flatten()
-                np.ma.set_fill_value(param_data, 9999)
+                if np.ma.is_masked(param_data):
+                    try:
+                        param_data = np.ma.masked_array(param_data).filled(np.nan)
+                    except TypeError: # mask vars
+                        param_data = np.ma.masked_array(param_data).filled()
 
                 return_img.update(
                     {str(parameter): param_data[self.grid.activegpis]})
@@ -106,7 +104,6 @@ class CCI_SM_025Img(ImageBase):
                     path, thefile = os.path.split(self.filename)
                     print ('%s in %s is corrupt - filling image with NaN values' % (parameter, thefile))
                     return_img[parameter] = np.empty(self.grid.n_gpi).fill(np.nan)
-                    return_metadata['corrupt_parameters'].append()
 
         dataset.close()
         if self.array_1D:
@@ -148,7 +145,7 @@ class CCI_SM_025Ds(MultiTemporalImageBase):
         If set then the data is read into 1D arrays. Needed for some legacy code.
     """
 
-    def __init__(self, data_path, parameter='sm', subgrid=None, array_1D=False):
+    def __init__(self, data_path, parameter=None, subgrid=None, array_1D=False):
 
         ioclass_kws = {'parameter': parameter,
                        'subgrid': subgrid,
@@ -228,4 +225,5 @@ class CCITs(GriddedNcOrthoMultiTs):
 
         grid = load_grid(grid_path)
         super(CCITs, self).__init__(ts_path, grid, **kwargs)
+
 
