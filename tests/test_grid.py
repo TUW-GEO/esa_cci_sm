@@ -6,7 +6,7 @@ import numpy as np
 
 class GridTest(unittest.TestCase):
 
-    def test_C3SCellGrid(self):
+    def test_CCICellGrid(self):
         grid = CCICellGrid()
         gp, dist = grid.find_nearest_gpi(75.625, 14.625)
         assert gp == 602942

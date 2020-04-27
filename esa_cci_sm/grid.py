@@ -21,10 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from smecv_grid.grid import SMECV_Grid_v042
+from smecv_grid.grid import SMECV_Grid_v052
 
 def CCICellGrid():
-    return SMECV_Grid_v042(None)
+    return SMECV_Grid_v052(None)
 
 def CCILandGrid():
-    return SMECV_Grid_v042('land')
+    return SMECV_Grid_v052('land')

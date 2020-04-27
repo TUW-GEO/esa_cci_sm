@@ -287,13 +287,6 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
     assert abs(image_p.data['sm'][203, 693] - 0.322685) <= 1e-5
     assert image_p.lon.shape == image_p.lat.shape == (720, 1440)
 
-if __name__ == '__main__':
-    test_CCI_SM_v33_025Img_img_reading_2D()
-    test_CCI_SM_v033_025Ds_img_reading()
-    test_CCI_SM_v033_025Ds_timestamps_for_daterange()
-    test_CCI_SM_v033_025Img_img_reading_1D_active()
-    test_CCI_SM_v033_025Img_img_reading_1D_combined()
-    test_CCI_SM_v033_025Img_img_reading_1D_passive()
 
 
 

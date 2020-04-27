@@ -12,5 +12,5 @@ repurpose
 pynetcf
 repurpose
 parse
-smecv_grid
+smecv_grid>=0.2.1
 more_itertools

@@ -94,47 +94,6 @@ def parse_filename(data_dir):
 
 
 
-def prod_spec_names(sensortype, config):
-    '''
-    Get specific names for sensortype version
-
-    Parameters
-    ----------
-    sensortype str
-        Product type: active, passive, combined
-    config : configparser.configparser
-        config parser to replace values in
-
-    Returns
-    -------
-    config : configparser.configparser
-        The updated configuration parser
-    '''
-
-    sensor_abbr = {'ACTIVE': 'SSMS', 'PASSIVE': 'SSMV', 'COMBINED': 'SSMV'}
-
-    sm_units_dict = {'ACTIVE': 'percentage (%)', 'PASSIVE': 'm3 m-3', 'COMBINED': 'm3 m-3'}
-
-    sm_full_name_dict = {'ACTIVE': 'Percent of Saturation Soil Moisture',
-                         'PASSIVE': 'Volumetric Soil Moisture',
-                         'COMBINED': 'Volumetric Soil Moisture'}
-
-    sm_uncertainty_full_name_dict = {'ACTIVE': 'Percent of Saturation Soil Moisture Uncertainty',
-                                     'PASSIVE': 'Volumetric Soil Moisture Uncertainty',
-                                     'COMBINED': 'Volumetric Soil Moisture Uncertainty'}
-
-    sensortype = sensortype.upper()
-
-    config.set('SM', 'full_name', sm_full_name_dict[sensortype])
-    config.set('SM', 'units', sm_units_dict[sensortype])
-
-
-    config.set('SM_UNCERTAINTY', 'full_name', sm_uncertainty_full_name_dict[sensortype])
-    config.set('SM_UNCERTAINTY', 'units', sm_units_dict[sensortype])
-
-    return config
-
-
 def read_metadata(sensortype, version, varnames):
     '''
     Read metadata dictionaries from the according ini file
@@ -156,6 +115,7 @@ def read_metadata(sensortype, version, varnames):
         Variable meta dicts
     '''
     config = configparser.RawConfigParser()
+    config.optionxform = str
     metafile = os.path.join(os.path.dirname(__file__), 'metadata',
                             'esa_cci_sm_v0{}_{}.ini'.format(version,
                                                             sensortype.upper()))
@@ -165,13 +125,27 @@ def read_metadata(sensortype, version, varnames):
 
     config.read(metafile)
 
-    config = prod_spec_names(sensortype, config)
-
     global_meta = OrderedDict(config.items('GLOBAL'))
 
     var_meta = OrderedDict()
     for var in varnames:
         var_meta[var] = OrderedDict(config.items(var.upper()))
+        try:
+            delim = ',' if ',' in var_meta[var]['valid_range'] else ' '
+            var_meta[var]['valid_range'] = \
+                np.array([float(j) for j in var_meta[var]['valid_range'].split(delim)])
+        except KeyError:
+            pass
+
+        try:
+            fill_value = var_meta[var]['_FillValue']
+            try:
+                var_meta[var]['_FillValue'] = int(fill_value)
+            except ValueError:
+                var_meta[var]['_FillValue'] = float(fill_value)
+        except KeyError:
+            pass
+
 
     return global_meta, var_meta
 
@@ -209,16 +183,6 @@ def reshuffle(input_root, outputpath,
     else:
         grid = CCICellGrid()
 
-    gpis, lons, lats, cells = grid.get_grid_points()
-    grid_vars = {'gpis': gpis, 'lons':lons, 'lats':lats}
-    # repurpose cannot handle masked arrays
-    for k, v in grid_vars.items(): # type v: np.ma.MaskedArray
-        if isinstance(v, np.ma.MaskedArray):
-            grid_vars[k] = v.filled()
-
-    grid = BasicGrid(lon=grid_vars['lons'], lat=grid_vars['lats'],
-                     gpis=grid_vars['gpis']).to_cell_grid(5.)
-
     if not os.path.exists(outputpath):
         os.makedirs(outputpath)
 
@@ -234,6 +198,8 @@ def reshuffle(input_root, outputpath,
         global_attr, ts_attributes = read_metadata(sensortype=file_args['sensor_type'],
                                                    version=int(file_args['version']),
                                                    varnames=parameters)
+        global_attr['time_coverage_start'] = str(startdate)
+        global_attr['time_coverage_end'] = str(enddate)
     else:
         global_attr = {'product' : 'ESA CCI SM'}
         ts_attributes = None
@@ -310,4 +276,6 @@ def main(args):
 
 def run():
     main(sys.argv[1:])
+
+
 
