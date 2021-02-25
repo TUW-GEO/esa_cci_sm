@@ -16,5 +16,5 @@ dependencies:
     - parse
     - configparser
     - smecv-grid==0.2.1
-    - pygeogids==0.3.0
+    - pygeogrids==0.3.0
     - more_itertools
