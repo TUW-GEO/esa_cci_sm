@@ -2,16 +2,15 @@
 esa_cci_sm
 ============
 
-
-.. image:: https://travis-ci.org/TUW-GEO/esa_cci_sm.svg?branch=master
-    :target: https://travis-ci.org/TUW-GEO/esa_cci_sm
+.. image:: https://github.com/TUW-GEO/esa_cci_sm/workflows/tests/badge.svg
+   :target: https://github.com/TUW-GEO/esa_cci_sm/actions?query=tests
 
 .. image:: https://coveralls.io/repos/github/TUW-GEO/esa_cci_sm/badge.svg?branch=master
     :target: https://coveralls.io/github/TUW-GEO/esa_cci_sm?branch=master
 
 .. image:: https://badge.fury.io/py/esa-cci-sm.svg
     :target: https://badge.fury.io/py/esa-cci-sm
-    
+
 .. image:: https://readthedocs.org/projects/esa_cci_sm/badge/?version=latest
     :target: http://esa_cci_sm.readthedocs.io/en/latest/?badge=latest
 
@@ -40,7 +39,7 @@ Supported Products
 ==================
 
 At the moment this package supports ESA CCI soil moisture data version
-v02.x, v03.x, v04.x and v05.x in netCDF format (reading and time series creation)
+v02.x, v03.x, v04.x and v05.x, v06.x in netCDF format (reading and time series creation)
 with a spatial sampling of 0.25 degrees.
 
 Contribute

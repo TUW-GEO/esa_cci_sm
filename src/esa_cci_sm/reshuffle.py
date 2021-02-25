@@ -36,7 +36,6 @@ from datetime import datetime
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
 from esa_cci_sm.grid import CCILandGrid, CCICellGrid
-from pygeogrids.grids import BasicGrid
 
 import configparser
 
