@@ -42,3 +42,4 @@ MANIFEST
 
 # ignore local scripts
 local_scripts/*
+.artifacts
