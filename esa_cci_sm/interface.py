@@ -52,13 +52,12 @@ class CCI_SM_025Img(ImageBase):
         If set then the data is read into 1D arrays. Needed for some legacy code.
     """
 
-    def __init__(self, filename, mode='r', parameter='sm', subgrid=None,
+    def __init__(self, filename, mode='r', parameter=None, subgrid=None,
                  array_1D=False):
+
         super(CCI_SM_025Img, self).__init__(filename, mode=mode)
 
-        if type(parameter) != list:
-            parameter = [parameter]
-        self.parameters = parameter
+        self.parameters = [parameter] if isinstance(parameter, str) else parameter
         self.grid = CCICellGrid() if not subgrid else subgrid
         self.array_1D = array_1D
 
@@ -71,27 +70,28 @@ class CCI_SM_025Img(ImageBase):
             dataset = Dataset(self.filename)
         except IOError as e:
             print(e)
-            print(" ".join([self.filename, "can not be opened"]))
+            print("{}: Cannot open file".format(self.filename))
             raise e
 
-        param_names = []
-        for parameter in self.parameters:
-            param_names.append(parameter)
+        if self.parameters is None:
+            param_names = [p for p in dataset.variables.keys() if p not in ['time', 'lat', 'lon']]
+        else:
+            param_names = self.parameters
 
         for parameter, variable in dataset.variables.items():
             if parameter in param_names:
                 param_metadata = {}
-                param_data = {}
                 for attrname in variable.ncattrs():
-                    if attrname in ['long_name', 'units']:
-                        param_metadata.update(
-                            {str(attrname): getattr(variable, attrname)})
+                    param_metadata.update(
+                        {str(attrname): getattr(variable, attrname)})
 
-                # param_data = dataset.variables[parameter][:].flatten()
                 param_data = dataset.variables[parameter][:]
                 param_data = np.flipud(param_data[0,:,:]).flatten()
-                #param_data = param_data[0,:,:].flatten()
-                np.ma.set_fill_value(param_data, 9999)
+                if np.ma.is_masked(param_data):
+                    try:
+                        param_data = np.ma.masked_array(param_data).filled(np.nan)
+                    except TypeError: # mask vars
+                        param_data = np.ma.masked_array(param_data).filled()
 
                 return_img.update(
                     {str(parameter): param_data[self.grid.activegpis]})
@@ -104,7 +104,6 @@ class CCI_SM_025Img(ImageBase):
                     path, thefile = os.path.split(self.filename)
                     print ('%s in %s is corrupt - filling image with NaN values' % (parameter, thefile))
                     return_img[parameter] = np.empty(self.grid.n_gpi).fill(np.nan)
-                    return_metadata['corrupt_parameters'].append()
 
         dataset.close()
         if self.array_1D:
@@ -146,7 +145,7 @@ class CCI_SM_025Ds(MultiTemporalImageBase):
         If set then the data is read into 1D arrays. Needed for some legacy code.
     """
 
-    def __init__(self, data_path, parameter='sm', subgrid=None, array_1D=False):
+    def __init__(self, data_path, parameter=None, subgrid=None, array_1D=False):
 
         ioclass_kws = {'parameter': parameter,
                        'subgrid': subgrid,
@@ -188,10 +187,43 @@ class CCI_SM_025Ds(MultiTemporalImageBase):
         return timestamps
 
 class CCITs(GriddedNcOrthoMultiTs):
-    ''' Read ESA CCI SM netcdf file in time series format'''
-    def __init__(self, ts_path, grid_path=None):
+    def __init__(self, ts_path, grid_path=None, **kwargs):
+        '''
+        Class for reading ESA CCI SM time series after reshuffling.
+
+        Parameters
+        ----------
+        ts_path : str
+            Directory where the netcdf time series files are stored
+        grid_path : str, optional (default: None)
+            Path to grid file, that is used to organize the location of time
+            series to read. If None is passed, grid.nc is searched for in the
+            ts_path.
+
+        Optional keyword arguments that are passed to the Gridded Base:
+        ------------------------------------------------------------------------
+            parameters : list, optional (default: None)
+                Specific variable names to read, if None are selected, all are read.
+            offsets : dict, optional (default:None)
+                Offsets (values) that are added to the parameters (keys)
+            scale_factors : dict, optional (default:None)
+                Offset (value) that the parameters (key) is multiplied with
+            ioclass_kws: dict
+                Optional keyword arguments to pass to OrthoMultiTs class:
+                ----------------------------------------------------------------
+                    read_bulk : boolean, optional (default:False)
+                        if set to True the data of all locations is read into memory,
+                        and subsequent calls to read_ts read from the cache and not from disk
+                        this makes reading complete files faster#
+                    read_dates : boolean, optional (default:False)
+                        if false dates will not be read automatically but only on specific
+                        request useable for bulk reading because currently the netCDF
+                        num2date routine is very slow for big datasets
+        '''
         if grid_path is None:
             grid_path = os.path.join(ts_path, "grid.nc")
 
         grid = load_grid(grid_path)
-        super(CCITs, self).__init__(ts_path, grid)
+        super(CCITs, self).__init__(ts_path, grid, **kwargs)
+
+

@@ -1,7 +1,3 @@
 mock
 numpy
-Cython
-pygeobase
-datedown
-trollsift
 sphinx==1.6.6

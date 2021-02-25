@@ -3,13 +3,14 @@
 # numpy
 # scipy>=0.9
 numpy
-netCDF4<=1.2.8
 pandas
 pygeobase
-configparser
 pyresample
+netCDF4
+configparser
 repurpose
 pynetcf
 repurpose
 parse
-smecv_grid
+smecv_grid>=0.2.1
+more_itertools

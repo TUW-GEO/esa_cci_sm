@@ -5,76 +5,77 @@ from esa_cci_sm.interface import CCI_SM_025Ds, CCI_SM_025Img
 from esa_cci_sm.grid import CCILandGrid
 import numpy.testing as nptest
 
-def test_CCI_SM_v022_025Ds_img_reading():
+def test_CCI_SM_v052_025Ds_img_reading():
     """
     test for the reading of the CCI_SM_DS class
     """
     parameter = ['sm']
     data_path = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-                "esa_cci_sm_dailyImages", "v02.2", "combined")
+                "esa_cci_sm_dailyImages", "v05.2", "combined")
     img_c = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
                          array_1D=False)
 
-    image_c = img_c.read(datetime(2014, 1, 1, 0))
+    image_c = img_c.read(datetime(2016, 6, 7, 0))
 
     assert sorted(image_c.data.keys()) == sorted(parameter)
-    assert image_c.timestamp == datetime(2014, 1, 1, 0)
-    nptest.assert_almost_equal(image_c.data['sm'][273, 693], 0.142200, 5)
+    assert image_c.timestamp == datetime(2016, 6, 7, 0)
+    assert abs(image_c.data['sm'][273, 693] - 0.06405) <= 1e-3 ##
     assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
 
     data_path = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-                "esa_cci_sm_dailyImages", "v02.2", "active")
+                "esa_cci_sm_dailyImages", "v05.2", "active")
     img_a = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
                          array_1D=False)
 
-    image_a = img_a.read(datetime(2014, 1, 1, 0))
+    image_a = img_a.read(datetime(2016, 6, 6, 0))
 
     assert sorted(image_a.data.keys()) == sorted(parameter)
-    assert image_a.timestamp == datetime(2014, 1, 1, 0)
-    nptest.assert_almost_equal(image_a.data['sm'][273, 693], 13.030, 5)
-    assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
+    assert image_a.timestamp == datetime(2016, 6, 6, 0)
+    assert abs(image_a.data['sm'][273, 693] - 0.65197) <= 1e-3
+
+    assert image_a.lon.shape == image_a.lat.shape == (720, 1440)
 
 
     data_path = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-                "esa_cci_sm_dailyImages", "v02.2", "passive")
-    img_c = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
+                "esa_cci_sm_dailyImages", "v05.2", "passive")
+    img_p = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
                          array_1D=False)
 
-    image_c = img_c.read(datetime(2014, 1, 1, 0))
+    image_p = img_p.read(datetime(2016, 6, 6, 0))
 
-    assert sorted(image_c.data.keys()) == sorted(parameter)
-    assert image_c.timestamp == datetime(2014, 1, 1, 0)
-    nptest.assert_almost_equal(image_c.data['sm'][273, 693], 0.0600, 5)
-    assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
+    assert sorted(image_p.data.keys()) == sorted(parameter)
+    assert image_p.timestamp == datetime(2016, 6, 6, 0)
+    assert abs(image_p.data['sm'][273, 693] - 0.0600) <= 1e-3
+    assert image_p.lon.shape == image_p.lat.shape == (720, 1440)
 
 
 
-def test_CCI_SM_v022_025Ds_timestamps_for_daterange():
+def test_CCI_SM_v052_025Ds_timestamps_for_daterange():
     """
     test for the tstamps_for_daterange function of the CCI_SM_DS class
     """
     parameter = ['sm']
-    should_datetime = [datetime(2014, 1, 1, 0),
-                       datetime(2014, 1, 2, 0)]
+    should_datetime = [datetime(2016, 6, 6, 0),
+                       datetime(2016, 6, 7, 0)]
     data_path = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-                "esa_cci_sm_dailyImages", "v02.2", "active")
+                "esa_cci_sm_dailyImages", "v05.2", "active")
     img_a = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
         array_1D=True)
 
-    tstamps_a = img_a.tstamps_for_daterange(datetime(2014, 1, 1),
-                                            datetime(2014, 1, 2))
+    tstamps_a = img_a.tstamps_for_daterange(datetime(2016, 6, 6),
+                                            datetime(2016, 6, 7))
 
     assert len(tstamps_a) == 2
     assert tstamps_a == should_datetime
 
     data_path = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-                "esa_cci_sm_dailyImages", "v02.2", "passive")
+                "esa_cci_sm_dailyImages", "v05.2", "passive")
 
     img_p = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
                          array_1D=True)
 
-    tstamps_p = img_p.tstamps_for_daterange(datetime(2014, 1, 1),
-                                            datetime(2014, 1, 2))
+    tstamps_p = img_p.tstamps_for_daterange(datetime(2016, 6, 6),
+                                            datetime(2016, 6, 7))
 
     assert len(tstamps_p) == 2
     assert tstamps_p == should_datetime
@@ -84,14 +85,15 @@ def test_CCI_SM_v022_025Ds_timestamps_for_daterange():
     img_c = CCI_SM_025Ds(data_path=data_path, parameter=parameter, subgrid=None,
                          array_1D=True)
 
-    tstamps_c = img_c.tstamps_for_daterange(datetime(2014, 1, 1),
-                                            datetime(2014, 1, 2))
+    tstamps_c = img_c.tstamps_for_daterange(datetime(2016, 6, 7),
+                                            datetime(2016, 6, 8))
 
     assert len(tstamps_c) == 2
-    assert tstamps_c == should_datetime
+    assert tstamps_c == [datetime(2016, 6, 7, 0),
+                         datetime(2016, 6, 8, 0)]
 
 
-def test_CCI_SM_v022_025Img_img_reading_1D_combined():
+def test_CCI_SM_v052_025Img_img_reading_1D_combined():
     """
     1D test for the read function of the CCI_SM_image class
     """
@@ -99,8 +101,8 @@ def test_CCI_SM_v022_025Img_img_reading_1D_combined():
     ##### global grid
     parameter = ['sm']
     filename = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-                "esa_cci_sm_dailyImages", "v02.2", "combined", "2014",
-                "ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-20140101000000-fv02.2.nc")
+                "esa_cci_sm_dailyImages", "v05.2", "combined", "2016",
+                "ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-20160607000000-fv05.2.nc")
 
     img_c = CCI_SM_025Img(filename=filename, parameter=parameter, subgrid=None,
                           array_1D=True)
@@ -117,7 +119,7 @@ def test_CCI_SM_v022_025Img_img_reading_1D_combined():
     assert sorted(image_c.data.keys()) == sorted(parameter)
 
     ref_sm = image_c.data['sm'][1440 * 301 + 1022]
-    nptest.assert_almost_equal(ref_sm, 0.237000, 5)
+    nptest.assert_almost_equal(ref_sm, 0.37016, 5)
 
     ###### land grid
     land_grid = CCILandGrid()
@@ -138,11 +140,11 @@ def test_CCI_SM_v022_025Img_img_reading_1D_combined():
 
 
 
-def test_CCI_SM_v022_025Img_img_reading_1D_active():
+def test_CCI_SM_v052_025Img_img_reading_1D_active():
     parameter = ['sm']
     filename = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-               "esa_cci_sm_dailyImages", "v02.2", "active", "2014",
-               "ESACCI-SOILMOISTURE-L3S-SSMS-ACTIVE-20140101000000-fv02.2.nc")
+               "esa_cci_sm_dailyImages", "v05.2", "active", "2016",
+               "ESACCI-SOILMOISTURE-L3S-SSMS-ACTIVE-20160606000000-fv05.2.nc")
 
     img_a = CCI_SM_025Img(filename, parameter=parameter,  subgrid=None,
                           array_1D=True)
@@ -160,7 +162,7 @@ def test_CCI_SM_v022_025Img_img_reading_1D_active():
     assert sorted(image_a.data.keys()) == sorted(parameter)
 
     ref_sm = image_a.data['sm'][1440 * 273 + 693]
-    nptest.assert_almost_equal(ref_sm, 13.030, 5)
+    nptest.assert_almost_equal(ref_sm, 0.6519703, 5)
 
     ###### land grid
     land_grid = CCILandGrid()
@@ -180,11 +182,11 @@ def test_CCI_SM_v022_025Img_img_reading_1D_active():
     nptest.assert_almost_equal(ref_sm, sm, 5)
 
 
-def test_CCI_SM_v022_025Img_img_reading_1D_passive():
+def test_CCI_SM_v052_025Img_img_reading_1D_passive():
     parameter = ['sm']
     filename = os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-               "esa_cci_sm_dailyImages", "v02.2", "passive", "2014",
-               "ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-20140101000000-fv02.2.nc")
+               "esa_cci_sm_dailyImages", "v05.2", "passive", "2016",
+               "ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-20160606000000-fv05.2.nc")
     img_p = CCI_SM_025Img(filename=filename, parameter=parameter, subgrid=None,
                           array_1D=True)
 
@@ -220,15 +222,15 @@ def test_CCI_SM_v022_025Img_img_reading_1D_passive():
     assert ref_lon == lon
     nptest.assert_almost_equal(ref_sm, sm, 5)
 
-def test_CCI_SM_v22_025Img_img_reading_2D():
+def test_CCI_SM_v052_025Img_img_reading_2D():
     """
     2D test for the read function of the CCI_SM_image class
     """
     parameter = ['sm']
     img_c = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-        "esa_cci_sm_dailyImages", "v02.2", "combined", "2014",
-        "ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-20140101000000-fv02.2.nc"),
+        "esa_cci_sm_dailyImages", "v05.2", "combined", "2016",
+        "ESACCI-SOILMOISTURE-L3S-SSMV-COMBINED-20160607000000-fv05.2.nc"),
         parameter=parameter)
 
     image_c = img_c.read()
@@ -239,7 +241,7 @@ def test_CCI_SM_v22_025Img_img_reading_2D():
     assert image_c.lon[0, 1439] == 179.875
     assert image_c.lat[0, 0] == 89.875
     assert image_c.lat[719, 0] == -89.875
-    nptest.assert_almost_equal(image_c.data['sm'][273, 693], 0.142200, 5)
+    assert abs(image_c.data['sm'][273, 693] - 0.06405) <= 1e-5
     assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
 
 
@@ -247,8 +249,8 @@ def test_CCI_SM_v22_025Img_img_reading_2D():
     parameter = ['sm']
     img_a = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-        "esa_cci_sm_dailyImages", "v02.2", "active", "2014",
-        "ESACCI-SOILMOISTURE-L3S-SSMS-ACTIVE-20140101000000-fv02.2.nc"),
+        "esa_cci_sm_dailyImages", "v05.2", "active", "2016",
+        "ESACCI-SOILMOISTURE-L3S-SSMS-ACTIVE-20160606000000-fv05.2.nc"),
         parameter=parameter)
 
     image_a = img_a.read()
@@ -259,7 +261,7 @@ def test_CCI_SM_v22_025Img_img_reading_2D():
     assert image_a.lon[0, 1439] == 179.875
     assert image_a.lat[0, 0] == 89.875
     assert image_a.lat[719, 0] == -89.875
-    nptest.assert_almost_equal(image_a.data['sm'][273, 693], 13.030, 5)
+    assert abs(image_a.data['sm'][273, 693] - 0.65197) <= 1e-5
     assert image_a.lon.shape == image_a.lat.shape == (720, 1440)
 
 
@@ -267,8 +269,8 @@ def test_CCI_SM_v22_025Img_img_reading_2D():
     parameter = ['sm']
     img_p = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
-        "esa_cci_sm_dailyImages", "v02.2", "passive", "2014",
-        "ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-20140101000000-fv02.2.nc"),
+        "esa_cci_sm_dailyImages", "v05.2", "passive", "2016",
+        "ESACCI-SOILMOISTURE-L3S-SSMV-PASSIVE-20160606000000-fv05.2.nc"),
         parameter=parameter)
 
     image_p = img_p.read()
@@ -279,20 +281,8 @@ def test_CCI_SM_v22_025Img_img_reading_2D():
     assert image_p.lon[0, 1439] == 179.875
     assert image_p.lat[0, 0] == 89.875
     assert image_p.lat[719, 0] == -89.875
-    nptest.assert_almost_equal(image_p.data['sm'][273, 693], 0.0600, 5)
+    assert abs(image_p.data['sm'][273, 693] - 0.0600) <= 1e-5
     assert image_p.lon.shape == image_p.lat.shape == (720, 1440)
 
-
-
-
-if __name__ == '__main__':
-    test_CCI_SM_v022_025Ds_img_reading()
-
-    test_CCI_SM_v022_025Img_img_reading_1D_combined()
-    test_CCI_SM_v022_025Img_img_reading_1D_active()
-    test_CCI_SM_v022_025Img_img_reading_1D_passive()
-
-    test_CCI_SM_v22_025Img_img_reading_2D()
-    test_CCI_SM_v022_025Ds_timestamps_for_daterange()
 
 

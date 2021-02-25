@@ -302,13 +302,3 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
 
 
 
-if __name__ == '__main__':
-    test_CCI_SM_v042_025Img_img_reading_2D()
-
-    test_CCI_SM_v042_025Ds_img_reading()
-    test_CCI_SM_v042_025Ds_timestamps_for_daterange()
-    test_CCI_SM_v042_025Img_img_reading_1D_combined()
-    test_CCI_SM_v042_025Img_img_reading_1D_active()
-    test_CCI_SM_v042_025Img_img_reading_1D_passive()
-
-

@@ -31,6 +31,13 @@ Which would take ESA CCI SM data stored in ``/cci_images`` over land from Januar
 2000 to January 2nd 2001 and store the parameters for soil moisture and its uncertainty as time
 series in the folder ``/timeseries/data``.
 
+**Note**: If a ``RuntimeError: NetCDF: Bad chunk sizes.`` appears during reshuffling, consider downgrading the
+netcdf4 C-library via:
+
+.. code-block:: shell
+
+  conda install -c conda-forge libnetcdf==4.3.3.1 --yes
+
 Conversion to time series is performed by the `repurpose package
 <https://github.com/TUW-GEO/repurpose>`_ in the background. For custom settings
 or other options see the `repurpose documentation

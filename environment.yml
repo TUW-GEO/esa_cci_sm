@@ -2,18 +2,18 @@
 # To create the full conda environment: conda env create -f environment.yml
 name: esa_cci_sm
 channels:
+  - conda-forge
   - defaults
 dependencies:
-  - netcdf4<=1.2.8
-  - numpy
   - pandas
-  - scipy
+  - netcdf4
+  - pyresample
+  - pip
   - pip:
+    - pygeobase
     - pynetcf
     - repurpose
-    - pytesmo
     - parse
     - configparser
-    - pyresample
-    - pytest-cov
-    - smecv-grid
+    - smecv-grid>=0.2.1
+    - more_itertools

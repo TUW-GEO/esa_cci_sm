@@ -47,5 +47,5 @@ The filename is automatically built from the given date.
 
 
 For reading all image between two dates the
-:py:meth:`c3s_sm.interface.CCI_SM_025Ds.iter_images` iterator can be
+:py:meth:`esa_cci_sm.interface.CCI_SM_025Ds.iter_images` iterator can be
 used.

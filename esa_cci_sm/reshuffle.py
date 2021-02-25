@@ -36,12 +36,14 @@ from datetime import datetime
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
 from esa_cci_sm.grid import CCILandGrid, CCICellGrid
+from pygeogrids.grids import BasicGrid
 
 import configparser
 
 from collections import OrderedDict
 
 from netCDF4 import Dataset
+import numpy as np
 
 
 def str2bool(val):
@@ -92,56 +94,7 @@ def parse_filename(data_dir):
 
 
 
-def prod_spec_names(sensortype, subversion, config):
-    '''
-    Get specific names for sensortype version
-
-    Parameters
-    ----------
-    sensortype str
-        Product type: active, passive, combined
-    subversion : str
-        Subversion identifier. eg. '02'
-    config : configparser.configparser
-        config parser to replace values in
-
-    Returns
-    -------
-    config : configparser.configparser
-        The updated configuration parser
-    '''
-
-    sensor_abbr = {'ACTIVE': 'SSMS', 'PASSIVE': 'SSMV', 'COMBINED': 'SSMV'}
-
-    sm_units_dict = {'ACTIVE': 'percentage (%)', 'PASSIVE': 'm3 m-3', 'COMBINED': 'm3 m-3'}
-
-    sm_full_name_dict = {'ACTIVE': 'Percent of Saturation Soil Moisture',
-                         'PASSIVE': 'Volumetric Soil Moisture',
-                         'COMBINED': 'Volumetric Soil Moisture'}
-
-    sm_uncertainty_full_name_dict = {'ACTIVE': 'Percent of Saturation Soil Moisture Uncertainty',
-                                     'PASSIVE': 'Volumetric Soil Moisture Uncertainty',
-                                     'COMBINED': 'Volumetric Soil Moisture Uncertainty'}
-
-    sensortype = sensortype.upper()
-
-    product = config.get('GLOBAL', 'product').format(sensor_abbr=sensor_abbr[sensortype],
-                                                     sensortype=sensortype,
-                                                     subversion=subversion)
-
-    config.set('GLOBAL', 'product', product)
-
-    config.set('SM', 'full_name', sm_full_name_dict[sensortype])
-    config.set('SM', 'units', sm_units_dict[sensortype])
-
-
-    config.set('SM_UNCERTAINTY', 'full_name', sm_uncertainty_full_name_dict[sensortype])
-    config.set('SM_UNCERTAINTY', 'units', sm_units_dict[sensortype])
-
-    return config
-
-
-def read_metadata(sensortype, version, varnames, subversion):
+def read_metadata(sensortype, version, varnames):
     '''
     Read metadata dictionaries from the according ini file
 
@@ -153,8 +106,6 @@ def read_metadata(sensortype, version, varnames, subversion):
         ESA CCI SM main version (eg. 2 or 3 or 4)
     varnames : list
         List of variables to read metadata for.
-    subversion : str
-        Subversion identifier. eg. '02'
 
     Returns
     -------
@@ -164,21 +115,37 @@ def read_metadata(sensortype, version, varnames, subversion):
         Variable meta dicts
     '''
     config = configparser.RawConfigParser()
+    config.optionxform = str
     metafile = os.path.join(os.path.dirname(__file__), 'metadata',
-                            'esa_cci_sm_v0%i.ini' % version)
+                            'esa_cci_sm_v0{}_{}.ini'.format(version,
+                                                            sensortype.upper()))
 
     if not os.path.isfile(metafile):
         raise ValueError(metafile, 'Meta data file does not exist')
 
     config.read(metafile)
 
-    config = prod_spec_names(sensortype, subversion, config)
-
     global_meta = OrderedDict(config.items('GLOBAL'))
 
     var_meta = OrderedDict()
     for var in varnames:
         var_meta[var] = OrderedDict(config.items(var.upper()))
+        try:
+            delim = ',' if ',' in var_meta[var]['valid_range'] else ' '
+            var_meta[var]['valid_range'] = \
+                np.array([float(j) for j in var_meta[var]['valid_range'].split(delim)])
+        except KeyError:
+            pass
+
+        try:
+            fill_value = var_meta[var]['_FillValue']
+            try:
+                var_meta[var]['_FillValue'] = int(fill_value)
+            except ValueError:
+                var_meta[var]['_FillValue'] = float(fill_value)
+        except KeyError:
+            pass
+
 
     return global_meta, var_meta
 
@@ -216,7 +183,6 @@ def reshuffle(input_root, outputpath,
     else:
         grid = CCICellGrid()
 
-
     if not os.path.exists(outputpath):
         os.makedirs(outputpath)
 
@@ -231,8 +197,9 @@ def reshuffle(input_root, outputpath,
     if not ignore_meta:
         global_attr, ts_attributes = read_metadata(sensortype=file_args['sensor_type'],
                                                    version=int(file_args['version']),
-                                                   varnames=parameters,
-                                                   subversion=file_args['sub_version'])
+                                                   varnames=parameters)
+        global_attr['time_coverage_start'] = str(startdate)
+        global_attr['time_coverage_end'] = str(enddate)
     else:
         global_attr = {'product' : 'ESA CCI SM'}
         ts_attributes = None
@@ -309,3 +276,6 @@ def main(args):
 
 def run():
     main(sys.argv[1:])
+
+
+

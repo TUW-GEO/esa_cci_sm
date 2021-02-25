@@ -33,15 +33,14 @@ commands:
 .. code-block:: shell
 
   git clone git@github.com:TUW-GEO/esa_cci_sm.git esa_cci_sm
-  cd esa_cci_sm
-  conda env create -f environment.yml
+  bash install.sh -d --python 3.6 --name esa_cci_sm
   source activate esa_cci_sm
 
 Supported Products
 ==================
 
 At the moment this package supports ESA CCI soil moisture data version
-v02.x and v03.x and v04.x in netCDF format (reading and time series creation)
+v02.x, v03.x, v04.x and v05.x in netCDF format (reading and time series creation)
 with a spatial sampling of 0.25 degrees.
 
 Contribute
@@ -51,13 +50,6 @@ We are happy if you want to contribute. Please raise an issue explaining what
 is missing or if you find a bug. We will also gladly accept pull requests
 against our master branch for new features or bug fixes.
 
-Development setup
------------------
-
-For Development we also recommend a ``conda`` environment. You can create one
-including test dependencies and debugger by running
-``conda env create -f environment.yml``. This will create a new ``esa_cci_sm``
-environment which you can activate by using ``source activate esa_cci_sm``.
 
 Guidelines
 ----------
