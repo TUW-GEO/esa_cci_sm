@@ -6,6 +6,10 @@ Unreleased ...
 ==============
 -
 
+Version v0.2.0
+==============
+- Update for cci v6
+
 Version v0.1.1
 ==============
 - Update time series reader class
