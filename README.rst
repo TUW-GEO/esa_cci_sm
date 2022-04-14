@@ -31,9 +31,12 @@ commands:
 
 .. code-block:: shell
 
-  git clone git@github.com:TUW-GEO/esa_cci_sm.git esa_cci_sm
-  bash install.sh -d --python 3.6 --name esa_cci_sm
+  git clone git@github.com:TUW-GEO/esa_cci_sm.git --recursive esa_cci_sm
+  conda env create -f esa_cci_sm/environment.yml
   source activate esa_cci_sm
+
+To checkout our testdata files, you need to have
+`Git LFS<https://git-lfs.github.com/>`_ installed on your machine.
 
 Supported Products
 ==================
