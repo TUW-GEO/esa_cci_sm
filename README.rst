@@ -2,8 +2,8 @@
 esa_cci_sm
 ============
 
-.. image:: https://github.com/TUW-GEO/esa_cci_sm/workflows/tests/badge.svg
-   :target: https://github.com/TUW-GEO/esa_cci_sm/actions?query=tests
+.. image:: https://github.com/TUW-GEO/esa_cci_sm/workflows/Automated%20Tests/badge.svg?branch=master
+   :target: https://github.com/TUW-GEO/esa_cci_sm/actions
 
 .. image:: https://coveralls.io/repos/github/TUW-GEO/esa_cci_sm/badge.svg?branch=master
     :target: https://coveralls.io/github/TUW-GEO/esa_cci_sm?branch=master
