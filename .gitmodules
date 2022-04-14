@@ -1,4 +1,4 @@
 [submodule "tests/esa_cci_sm-test-data"]
 	path = tests/esa_cci_sm-test-data
-	url = https://github.com/TUW-GEO/esa_cci_sm-test-data
-	branch = master
+	url = https://git.geo.tuwien.ac.at/public_projects/rs/rs_testdata/esa_cci_sm-test-data
+	branch = main

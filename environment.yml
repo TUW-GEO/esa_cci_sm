@@ -5,6 +5,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - python>=3.8
   - pandas
   - netcdf4
   - pyresample
@@ -18,3 +19,6 @@ dependencies:
     - smecv-grid==0.2.1
     - pygeogrids==0.3.0
     - more_itertools
+    - sphinx_rtd_theme
+    - pytest
+    - pytest-cov
