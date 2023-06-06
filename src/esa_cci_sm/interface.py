@@ -20,6 +20,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import warnings
 
 import numpy as np
 import os
@@ -41,15 +42,16 @@ class CCI_SM_025Img(ImageBase):
 
     Parameters
     ----------
-    filename: string
+    filename: str
         Filename of the ESA CCI SM netcdf file
-    mode: string, optional (default: 'r')
+    mode: str, optional (default: 'r')
         Mode of opening the file, only 'r' is implemented at the moment
-    parameter : string or list, optional (default: 'sm')
+    parameter : str or list[str,...], optional (default: 'sm')
         One or list of parameters to read, see ESA CCI documentation for
         more information
     array_1D: boolean, optional (default: False)
-        If set then the data is read into 1D arrays. Needed for some legacy code.
+        If set then the data is read into 1D arrays. Where the first element
+        refers to the lower left data point in the 2d image.
     """
 
     def __init__(self, filename, mode='r', parameter=None, subgrid=None,
@@ -62,16 +64,26 @@ class CCI_SM_025Img(ImageBase):
         self.array_1D = array_1D
 
     def read(self, timestamp=None):
-        # Returns the selected parameters for a ESA CCI SM image and according metadata
+        """
+        Read data from loaded netcdf file.
+
+        Parameters
+        ----------
+        timestamp: datetime
+            Time stamp for this image.
+
+        Returns
+        -------
+        img: Image
+           Image object as implemented in pygeobase
+        """
         return_img = {}
         return_metadata = {}
 
         try:
             dataset = Dataset(self.filename)
         except IOError as e:
-            print(e)
-            print("{}: Cannot open file".format(self.filename))
-            raise e
+            raise IOError(f"Could not open file {self.filename}: {e}")
 
         if self.parameters is None:
             param_names = [p for p in dataset.variables.keys() if p not in ['time', 'lat', 'lon']]
@@ -102,22 +114,24 @@ class CCI_SM_025Img(ImageBase):
                     return_img[parameter]
                 except KeyError:
                     path, thefile = os.path.split(self.filename)
-                    print ('%s in %s is corrupt - filling image with NaN values' % (parameter, thefile))
+                    warnings.warn(f"{parameter} in {thefile} is corrupt - "
+                                  f"filling image with NaN values")
                     return_img[parameter] = np.empty(self.grid.n_gpi).fill(np.nan)
 
         dataset.close()
+
         if self.array_1D:
             return Image(self.grid.activearrlon, self.grid.activearrlat,
                          return_img, return_metadata, timestamp)
         else:
             yres, xres = self.grid.shape
             for key in return_img:
-                return_img[key] = return_img[key].reshape((xres, yres))
+                return_img[key] = return_img[key].reshape((yres, xres))
 
             return Image(
-                self.grid.activearrlon.reshape((xres, yres)),
-                self.grid.activearrlat.reshape((xres, yres)),
-                return_img,
+                self.grid.activearrlon.reshape((yres, xres)),
+                np.flipud(self.grid.activearrlat.reshape((yres, xres))),
+                {k: np.flipud(v) for k, v in return_img.items()},
                 return_metadata,
                 timestamp)
 
@@ -225,5 +239,3 @@ class CCITs(GriddedNcOrthoMultiTs):
 
         grid = load_grid(grid_path)
         super(CCITs, self).__init__(ts_path, grid, **kwargs)
-
-

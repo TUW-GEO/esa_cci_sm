@@ -20,8 +20,7 @@ def test_CCI_SM_v033_025Ds_img_reading():
 
     assert sorted(image_c.data.keys()) == sorted(parameter)
     assert image_c.timestamp == datetime(2016, 1, 1, 0)
-
-    assert abs(image_c.data['sm'][273, 693] - 0.142998) <= 1e-5
+    nptest.assert_almost_equal(image_c.data['sm'][273, 693], 0.142998, 5)
     assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
 
 
@@ -33,7 +32,7 @@ def test_CCI_SM_v033_025Ds_img_reading():
 
     assert sorted(image_a.data.keys()) == sorted(parameter)
     assert image_a.timestamp == datetime(2016, 1, 1, 0)
-    assert abs(image_a.data['sm'][273, 693] - 18.92771) <= 1e-5
+    nptest.assert_almost_equal(image_a.data['sm'][273, 693], 18.92771, 5)
     assert image_a.lon.shape == image_a.lat.shape == (720, 1440)
 
 
@@ -46,7 +45,7 @@ def test_CCI_SM_v033_025Ds_img_reading():
 
     assert sorted(image_p.data.keys()) == sorted(parameter)
     assert image_p.timestamp == datetime(2016, 1, 1, 0)
-    assert abs(image_p.data['sm'][273, 693] - 0.0700) <= 1e-5
+    nptest.assert_almost_equal(image_p.data['sm'][273, 693], 0.0700, 5)
 
     assert image_p.lon.shape == image_p.lat.shape == (720, 1440)
 
@@ -108,15 +107,15 @@ def test_CCI_SM_v033_025Img_img_reading_1D_combined():
 
     image_c = img_c.read()
 
-    ref_lat = image_c.lat[1440 * 273 + 693]
+    ref_lat = image_c.lat[1440 * (719-273) + 693]
     ref_lon = image_c.lon[1440 * 273 + 693]
 
     assert ref_lon == -6.625
-    assert ref_lat== 21.625
+    assert ref_lat == 21.625
 
     assert sorted(image_c.data.keys()) == sorted(parameter)
 
-    ref_sm = image_c.data['sm'][1440 * 273 + 693]
+    ref_sm = image_c.data['sm'][1440 * (719-273) + 693]
     nptest.assert_almost_equal(ref_sm, 0.142998, 5)
 
     ###### land grid
@@ -150,15 +149,15 @@ def test_CCI_SM_v033_025Img_img_reading_1D_active():
 
     image_a = img_a.read()
 
-    ref_lat = image_a.lat[1440 * 273 + 693]
+    ref_lat = image_a.lat[1440 * (719-273) + 693]
     ref_lon = image_a.lon[1440 * 273 + 693]
 
     assert ref_lon == -6.625
-    assert ref_lat== 21.625
+    assert ref_lat == 21.625
 
     assert sorted(image_a.data.keys()) == sorted(parameter)
 
-    ref_sm = image_a.data['sm'][1440 * 273 + 693]
+    ref_sm = image_a.data['sm'][1440 * (719-273) + 693]
     nptest.assert_almost_equal(ref_sm, 18.92771, 5)
 
     image_a = img_a.read()
@@ -194,7 +193,7 @@ def test_CCI_SM_v033_025Img_img_reading_1D_passive():
 
     image_p = img_p.read()
 
-    ref_lat = image_p.lat[1440 * 273 + 693]
+    ref_lat = image_p.lat[1440 * (719-273) + 693]
     ref_lon = image_p.lon[1440 * 273 + 693]
 
     assert ref_lon == -6.625
@@ -202,7 +201,7 @@ def test_CCI_SM_v033_025Img_img_reading_1D_passive():
 
     assert sorted(image_p.data.keys()) == sorted(parameter)
 
-    ref_sm = image_p.data['sm'][1440 * 273 + 693]
+    ref_sm = image_p.data['sm'][1440 * (719-273)  + 693]
     nptest.assert_almost_equal(ref_sm, 0.0700, 5)
 
 
@@ -248,7 +247,6 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
     assert image_c.lon.shape == image_c.lat.shape == (720, 1440)
 
 
-
     parameter = ['sm']
     img_a = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
@@ -268,7 +266,6 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
     assert image_a.lon.shape == image_a.lat.shape == (720, 1440)
 
 
-
     parameter = ['sm']
     img_p = CCI_SM_025Img(
         os.path.join(os.path.dirname(__file__), "esa_cci_sm-test-data",
@@ -286,7 +283,3 @@ def test_CCI_SM_v33_025Img_img_reading_2D():
     assert image_p.lat[719, 0] == -89.875
     assert abs(image_p.data['sm'][203, 693] - 0.322685) <= 1e-5
     assert image_p.lon.shape == image_p.lat.shape == (720, 1440)
-
-
-
-
