@@ -15,7 +15,7 @@ dependencies:
     - repurpose
     - parse
     - configparser
-    - smecv-grid
+    - smecv-grid>=0.3
     - pygeogrids
     - more_itertools
     - sphinx_rtd_theme
