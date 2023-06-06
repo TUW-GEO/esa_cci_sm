@@ -200,7 +200,7 @@ def reshuffle(input_root, outputpath,
         global_attr['time_coverage_start'] = str(startdate)
         global_attr['time_coverage_end'] = str(enddate)
     else:
-        global_attr = {'product' : 'ESA CCI SM'}
+        global_attr = {'product': 'ESA CCI SM'}
         ts_attributes = None
 
 
@@ -213,7 +213,7 @@ def reshuffle(input_root, outputpath,
 
 
 def parse_args(args):
-    '''
+    """
     Parse command line parameters for conversion from image to timeseries
 
     Parameters
@@ -225,7 +225,7 @@ def parse_args(args):
     -------
     params : argparse.Namespace
         Command line parameters
-    '''
+    """
 
     parser = argparse.ArgumentParser(
         description="Convert ESA CCI image data to time series format.")
@@ -275,6 +275,3 @@ def main(args):
 
 def run():
     main(sys.argv[1:])
-
-
-

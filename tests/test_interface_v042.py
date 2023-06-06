@@ -4,6 +4,7 @@ from datetime import datetime
 
 from esa_cci_sm.interface import CCI_SM_025Ds, CCI_SM_025Img
 from esa_cci_sm.grid import CCILandGrid
+import numpy as np
 
 import numpy.testing as nptest
 
@@ -26,7 +27,7 @@ def test_CCI_SM_v042_025Ds_img_reading():
 
     assert sorted(image_c.data.keys()) == sorted(parameter)
     assert image_c.timestamp == datetime(2016, 6, 7, 0)
-    assert abs(image_c.data['sm'][122400] - 0.1755) <= 1e-3 # 1440 * 85 = 1222400
+    assert abs(image_c.data['sm'][912960] - 0.1755) <= 1e-3 # 1440 * 634 = 912960
     assert image_c.lon.shape == image_c.lat.shape == (720 * 1440,)
 
 
@@ -40,7 +41,7 @@ def test_CCI_SM_v042_025Ds_img_reading():
 
     assert sorted(image_a.data.keys()) == sorted(parameter)
     assert image_a.timestamp == datetime(2016, 6, 6, 0)
-    assert abs(image_a.data['sm'][133920] - 100) <= 1e-3 # 93*1440
+    assert abs(image_a.data['sm'][901440] - 100) <= 1e-3 # 626*1440
     assert image_a.lon.shape == (360 * 180 * (1 / 0.25)**2,)
     assert image_a.lon.shape == image_a.lat.shape
 
@@ -54,7 +55,7 @@ def test_CCI_SM_v042_025Ds_img_reading():
 
     assert sorted(image_p.data.keys()) == sorted(parameter)
     assert image_p.timestamp == datetime(2016, 6, 6, 0)
-    assert abs(image_p.data['sm'][123840] - 0.31) <= 1e-3 # 86*1440
+    assert abs(image_p.data['sm'][911520] - 0.31) <= 1e-3 # 633*1440
     assert image_p.lon.shape == (360 * 180 * (1 / 0.25)**2,)
     assert image_p.lon.shape == image_p.lat.shape
 
@@ -124,13 +125,13 @@ def test_CCI_SM_v042_025Img_img_reading_1D_combined():
     image_c = img_c.read()
 
 
-    ref_lat = image_c.lat[1440 * 85] # = 122400
-    ref_lon = image_c.lon[1440 * 85]
+    ref_lat = image_c.lat[1440 * (719-85)] # = 912960
+    ref_lon = image_c.lon[1440 * (719-85)]
 
     assert ref_lon == -179.875
     assert ref_lat == 68.625
     assert sorted(image_c.data.keys()) == sorted(parameter)
-    ref_sm = image_c.data['sm'][122400]
+    ref_sm = image_c.data['sm'][912960]
     assert abs(ref_sm - 0.1755) <= 1e-3
 
     ###land_grid
@@ -142,9 +143,10 @@ def test_CCI_SM_v042_025Img_img_reading_1D_combined():
 
     image_c = img_c.read()
 
-    sm = image_c.data['sm'][24434]
-    lat = image_c.lat[24434]
-    lon = image_c.lon[24434]
+    idx = np.where(land_grid.activegpis == 912960)[0][0]
+    sm = image_c.data['sm'][idx]
+    lat = image_c.lat[idx]
+    lon = image_c.lon[idx]
 
     assert ref_lat == lat
     assert ref_lon == lon
@@ -168,13 +170,13 @@ def test_CCI_SM_v042_025Img_img_reading_1D_active():
 
     image_a = img_a.read()
 
-    ref_lat = image_a.lat[1440 * 93]  # = 133920
-    ref_lon = image_a.lon[1440 * 93]
+    ref_lat = image_a.lat[1440 * (719-93)]  # = 901440
+    ref_lon = image_a.lon[1440 * (719-93)]
 
     assert ref_lon == -179.875
     assert ref_lat == 66.625
     assert sorted(image_a.data.keys()) == sorted(parameter)
-    ref_sm = image_a.data['sm'][133920]
+    ref_sm = image_a.data['sm'][901440]
     assert abs(ref_sm - 100.) <= 1e-3
 
     ###land_grid
@@ -185,10 +187,11 @@ def test_CCI_SM_v042_025Img_img_reading_1D_active():
     assert img_a.grid.find_nearest_gpi(-179.875, 66.625) == (901440, 0)
 
     image_a = img_a.read()
+    idx = np.where(land_grid.activegpis == 901440)[0][0]
 
-    sm = image_a.data['sm'][32830]
-    lat = image_a.lat[32830]
-    lon = image_a.lon[32830]
+    sm = image_a.data['sm'][idx]
+    lat = image_a.lat[idx]
+    lon = image_a.lon[idx]
 
     assert ref_lat == lat
     assert ref_lon == lon
@@ -206,13 +209,13 @@ def test_CCI_SM_v042_025Img_img_reading_1D_passive():
 
     image_p = img_p.read()
 
-    ref_lat = image_p.lat[1440 * 86]  # = 123840
-    ref_lon = image_p.lon[1440 * 86]
+    ref_lat = image_p.lat[1440 * (719-86)]  # = 911520
+    ref_lon = image_p.lon[1440 * (719-86)]
 
     assert ref_lon == -179.875
     assert ref_lat == 68.375
     assert sorted(image_p.data.keys()) == sorted(parameter)
-    ref_sm = image_p.data['sm'][123840]
+    ref_sm = image_p.data['sm'][911520]
     assert abs(ref_sm - 0.31) <= 1e-3
 
     ###land_grid
@@ -223,10 +226,11 @@ def test_CCI_SM_v042_025Img_img_reading_1D_passive():
     assert img_a.grid.find_nearest_gpi(-179.875, 68.375) == (911520, 0)
 
     image_a = img_a.read()
+    idx = np.where(land_grid.activegpis == 911520)[0][0]
 
-    sm = image_a.data['sm'][25410]
-    lat = image_a.lat[25410]
-    lon = image_a.lon[25410]
+    sm = image_a.data['sm'][idx]
+    lat = image_a.lat[idx]
+    lon = image_a.lon[idx]
 
     assert ref_lat == lat
     assert ref_lon == lon
@@ -300,5 +304,10 @@ def test_CCI_SM_v042_025Img_img_reading_2D():
     assert image_p.lon.shape == (720, 1440)
     assert image_p.lon.shape == image_p.lat.shape
 
-
-
+if __name__ == '__main__':
+    test_CCI_SM_v042_025Ds_img_reading()
+    test_CCI_SM_v042_025Img_img_reading_2D()
+    test_CCI_SM_v042_025Ds_timestamps_for_daterange()
+    test_CCI_SM_v042_025Img_img_reading_1D_active()
+    test_CCI_SM_v042_025Img_img_reading_1D_combined()
+    test_CCI_SM_v042_025Img_img_reading_1D_passive()
