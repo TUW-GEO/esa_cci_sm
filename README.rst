@@ -38,7 +38,7 @@ commands:
   pip install -e .
 
 To checkout our testdata files, you need to have
-`Git LFS<https://git-lfs.github.com/>`_ installed on your machine.
+`Git LFS <https://git-lfs.github.com/>`_ installed on your machine.
 
 Supported Products
 ==================
