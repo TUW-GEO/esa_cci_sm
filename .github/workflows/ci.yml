@@ -50,7 +50,7 @@ jobs:
         run: |
           if [ ${{ matrix.os }} == "macos-latest" ]
           then
-            mamba install -c conda-forge pykdtree
+            conda install -c conda-forge pykdtree
           fi
           pip install -e .[testing]
       - name: Run all tests
