@@ -14,7 +14,7 @@ esa_cci_sm
     :target: http://badge.fury.io/py/esa_cci_sm
 
 .. |doc| image:: https://readthedocs.org/projects/esa_cci_sm/badge/?version=latest
-   :target: http://esa_cci_sm.readthedocs.org/
+   :target: http://esa-cci-sm.readthedocs.org/
 
 
 Tools to convert `ESA CCI SM <https://climate.esa.int/en/projects/soil-moisture/>`_ image files into a time series format.
@@ -30,7 +30,7 @@ via `pip <https://pip.pypa.io/en/stable/getting-started/>`_
 
     pip install esa_cci_sm
 
-On macOS if you get ImportError: Pykdtree failed to import its C extension,
+On macOS if you get ``ImportError: Pykdtree failed to import its C extension``,
 then it might be necessary to install the `pykdtree` package from conda-forge
 
 .. code-block:: shell
@@ -45,10 +45,11 @@ Download ESA CCI SM data files either from the public
 or the CEDA FTP server using, e.g. `FileZilla <https://filezilla-project.org/>`_
 or `wget <https://www.gnu.org/software/wget/>`_
 
-**Host**: ``anon-ftp.ceda.ac.uk`` no password or user required
-**Directory**: ``/neodc/esacci/soil_moisture``)
+**Host (FTP)**: ``anon-ftp.ceda.ac.uk`` no password or user required
 
-E.g the following command will download v9.1 COMBINED data for the year 2023
+**Directory (FTP)**: ``/neodc/esacci/soil_moisture``)
+
+E.g the following command will download v9.1 COMBINED data for the year 2023 from the CEDA FTP via wget
 
 .. code-block:: shell
 
