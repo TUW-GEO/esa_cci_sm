@@ -1,4 +1,4 @@
-.. include:: ../README.rst
+.. include:: readme.rst
 .. include:: reading.rst
 .. include:: varnames.rst
 .. include:: img2ts.rst
@@ -10,13 +10,11 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-
-   Data reading <reading>
+   Overview <readme>
+   Image reading <reading>
    Variable names <varnames>
-   Conversion to time series <img2ts>
+   Time Series Grid <grid>
    License <license>
-   Authors <authors>
-   Changelog <changes>
    Module Reference <api/modules>
 
 

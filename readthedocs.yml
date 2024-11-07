@@ -1,19 +1,17 @@
 version: 2
 
-sphinx:
-   configuration: docs/conf.py
-
-formats:
-   - pdf
-
-submodules:
-   include: all
-
-conda:
-   environment: environment.yml
+build:
+  os: ubuntu-22.04
+  tools:
+    python: mambaforge-4.10
 
 python:
-   version: 3.7
-   install:
-      - method: pip
-        path: .
+  install:
+    - method: pip
+      path: .[docs]
+
+sphinx:
+  configuration: docs/conf.py
+
+conda:
+  environment: docs/env.yml

@@ -1,6 +1,12 @@
 Reading ESA CCI SM images
 -------------------------
 
+To read the ESA CCI image data we recommend to use python tools such as
+`xarray <https://docs.xarray.dev/en/stable/>`_ or `netCDF4 <https://unidata.github.io/netcdf4-python/>`_.
+
+However, there are also reader classes provided in this package. These are mainly
+used by the image-to-timeseries conversion tool.
+
 Reading of the ESA CCI SM raw netcdf files can be done in two ways.
 
 Reading by file name
