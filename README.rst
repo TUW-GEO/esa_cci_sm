@@ -53,7 +53,7 @@ E.g the following command will download v9.1 COMBINED data for the year 2023 fro
 
 .. code-block:: shell
 
-    wget ftp://anon-ftp.ceda.ac.uk/neodc/esacci/soil_moisture/data/daily_files/COMBINED/v09.1/2023/*.nc
+    wget -np -nH --cut-dirs 7 -r ftp://anon-ftp.ceda.ac.uk/neodc/esacci/soil_moisture/data/daily_files/COMBINED/v09.1/2023/
 
 Time series creation
 --------------------
