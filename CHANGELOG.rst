@@ -2,10 +2,17 @@
 Changelog
 =========
 
-Unreleased changes (master)
-===========================
+Unreleased changes on master branch
+===================================
 
 -
+
+Version v0.5.0
+==============
+
+- Update for v9
+- Metadata is not included by default anymore
+- CI, docs and dependency list updated
 
 Version v0.4.0
 ==============

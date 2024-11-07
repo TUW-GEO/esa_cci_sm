@@ -20,7 +20,7 @@ def test_reshuffle_v052():
     startdate = "2016-06-07T00:00"
     enddate = "2016-06-08T00:00"
     parameters = ["--parameters", "sm", "sm_uncertainty", "flag"]
-    land_points = ["--land_points", "True"]
+    land_points = ["--land_points", "True", '--ignore_meta', "False"]
 
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters + land_points
@@ -56,7 +56,7 @@ def test_reshuffle_v042():
     startdate = "2016-06-06T00:00"
     enddate = "2016-06-07T00:00"
     parameters = ["--parameters", "sm", "sm_uncertainty"]
-    land_points = ["--land_points", "True"]
+    land_points = ["--land_points", "True", '--ignore_meta', "False"]
 
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters + land_points
@@ -92,7 +92,7 @@ def test_reshuffle_v033():
     startdate = "2016-01-01T00:00"
     enddate = "2016-01-03T00:00"
     parameters = ["--parameters", "sm", "sm_uncertainty"]
-    land_points = ['--land_points', 'False']
+    land_points = ['--land_points', 'False', '--ignore_meta', "False"]
 
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters + land_points

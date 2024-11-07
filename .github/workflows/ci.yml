@@ -15,28 +15,26 @@ on:
 
 jobs:
   build:
-    name: Build py${{ matrix.python-version }} @ ${{ matrix.os }} 🐍
+    name: py${{ matrix.python-version }}@${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10']
-        os: ["ubuntu-latest", "windows-latest"]
+        python-version: ['3.9', '3.12']
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
           lfs: true
       - name: Checkout LFS objects
         run: git lfs checkout
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: conda-incubator/setup-miniconda@v3
         with:
-          miniconda-version: "latest"
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
-          environment-file: environment.yml
-          mamba-version: "*"
+          channel-priority: flexible
           activate-environment: esa_cci_sm
           auto-activate-base: false
       - name: Print environment infos
@@ -47,17 +45,39 @@ jobs:
           pip list
           which pip
           which python
+      - name: Install dependencies and package
+        shell: bash -l {0}
+        run: |
+          if [ ${{ matrix.os }} == "macos-latest" ]
+          then
+            conda install -c conda-forge pykdtree
+          fi
+          pip install -e .[testing]
+      - name: Run all tests
+        shell: bash -l {0}
+        run: |
+          pytest
       - name: Export Environment
         shell: bash -l {0}
         run: |
-          mkdir -p .artifacts
+          mkdir -p artifacts
           filename=env_py${{ matrix.python-version }}_${{ matrix.os }}.yml
-          conda env export --no-builds | grep -v "prefix" > .artifacts/$filename
-      - name: Install package and test
+          conda env export --no-builds | grep -v "prefix" > artifacts/$filename
+      - name: Create wheel and dist package
         shell: bash -l {0}
         run: |
-          pip install .
-          pytest
+          pip install setuptools_scm twine
+          if [ ${{ matrix.os }} == "windows-latest" ]
+          then
+            # build whls on windows
+            pip install wheel
+            python setup.py bdist_wheel --dist-dir artifacts/dist
+          else
+            # build dist on linux
+            python setup.py sdist --dist-dir artifacts/dist
+          fi
+          ls artifacts/dist
+          twine check artifacts/dist/*
       - name: Upload Coverage
         shell: bash -l {0}
         run: |
@@ -66,26 +86,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
           COVERALLS_PARALLEL: true
-      - name: Create wheel and dist package
-        shell: bash -l {0}
-        run: |
-          pip install setuptools_scm
-          if [ ${{ matrix.os }} == "windows-latest" ]
-          then
-            # build whls on windows
-            pip install wheel
-            python setup.py bdist_wheel --dist-dir .artifacts/dist
-          else
-            # build dist on linux
-            python setup.py sdist --dist-dir .artifacts/dist
-          fi
-          ls .artifacts/dist
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: Artifacts
-          path: .artifacts/*
-  coveralls:
+          name: Artifacts-py${{ matrix.python-version }}-${{ matrix.os }}
+          path: artifacts/*
+
+  publish-coverage:
     name: Submit Coveralls 👚
     needs: build
     runs-on: ubuntu-latest
@@ -96,9 +103,13 @@ jobs:
           pip3 install --upgrade coveralls && coveralls --service=github --finish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  publish:
-    name: Upload to PyPI
-    if: startsWith(github.ref, 'refs/tags/v') && startsWith(github.repository, 'TUW-GEO')
+
+  publish-pypi-package:
+    name: Publish PyPI 🚀
+    # Will only trigger when Tests have passed on release/tag from the TUW-GEO repository
+    if: |
+      startsWith(github.ref, 'refs/tags/v') &&
+      startsWith(github.repository, 'TUW-GEO')
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -107,7 +118,11 @@ jobs:
           echo "GITHUB_REF = $GITHUB_REF"
           echo "GITHUB_REPOSITORY = $GITHUB_REPOSITORY"
       - name: Download Artifacts
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v4
+        with:
+          path: Artifacts
+          pattern: Artifacts-*
+          merge-multiple: true
       - name: Display downloaded files
         run: ls -aR
       - name: Upload to PyPI
@@ -118,4 +133,4 @@ jobs:
           verify_metadata: true
           packages_dir: Artifacts/dist/
           user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}  # todo: add pypi token to GHA
+          password: ${{ secrets.PYPI_API_TOKEN }} # this needs to be uploaded to github actions secrets

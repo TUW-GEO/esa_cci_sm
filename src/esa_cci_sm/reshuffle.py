@@ -206,8 +206,7 @@ def reshuffle(input_root, outputpath,
 
     reshuffler = Img2Ts(input_dataset=input_dataset, outputpath=outputpath,
                         startdate=startdate, enddate=enddate, input_grid=grid,
-                        imgbuffer=imgbuffer, cellsize_lat=5.0, cellsize_lon=5.0,
-                        global_attr=global_attr, zlib=True,
+                        imgbuffer=imgbuffer, global_attr=global_attr, zlib=True,
                         unlim_chunksize=1000, ts_attributes=ts_attributes)
     reshuffler.calc()
 
@@ -246,7 +245,7 @@ def parse_args(args):
     parser.add_argument("--land_points", type=str2bool, default='False',
                         help=("Set True to convert only land points as defined"
                               " in the SMECV-grid land mask (faster and less/smaller files)"))
-    parser.add_argument("--ignore_meta", type=str2bool, default='False',
+    parser.add_argument("--ignore_meta", type=str2bool, default='True',
                         help=("Do not apply metadata from ini files to the time series"))
     parser.add_argument("--imgbuffer", type=int, default=200,
                         help=("How many images to read at once. Bigger numbers make the "
