@@ -34,3 +34,14 @@ def CCICellGrid_MR():
 
 def CCILandGrid_MR():
     return SMECV_Grid_MR_v01('land')
+
+grid_func_lut =  {
+    "cell": {
+        0.1: CCICellGrid_MR(),
+        0.25: CCICellGrid()
+    },
+    "land": {
+        0.1: CCILandGrid_MR(),
+        0.25: CCILandGrid()
+    }
+                  }

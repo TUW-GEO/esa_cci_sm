@@ -35,7 +35,7 @@ from datetime import datetime
 
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
-from esa_cci_sm.grid import CCILandGrid, CCICellGrid
+from esa_cci_sm.grid import CCILandGrid, CCICellGrid, grid_func_lut
 
 import configparser
 
@@ -153,7 +153,8 @@ def read_metadata(sensortype, version, varnames):
 def reshuffle(input_root, outputpath,
               startdate, enddate,
               parameters=None, land_points=True, ignore_meta=False,
-              imgbuffer=200):
+              imgbuffer=200,
+              resolution = 0.25):
     """
     Reshuffle method applied to ESA CCI SM images.
 
@@ -178,9 +179,10 @@ def reshuffle(input_root, outputpath,
         How many images to read at once before writing time series.
     """
     if land_points:
-        grid = CCILandGrid()
+        grid = grid_func_lut["land"][resolution]
+
     else:
-        grid = CCICellGrid()
+        grid = grid_func_lut["cell"][resolution]
 
     if not os.path.exists(outputpath):
         os.makedirs(outputpath)
