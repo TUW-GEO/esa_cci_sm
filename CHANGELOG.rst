@@ -2,10 +2,14 @@
 Changelog
 =========
 
-Unreleased changes on master branch
-===================================
+Unreleased changes (master)
+===========================
+- Added support for subdaily (12-hourly) product
+- Set `ignore_meta` to `True` by default during time series conversion
 
--
+Version v0.5.0
+==============
+- Update for cci v9 (FT and RZSM support added).
 
 Version v0.5.0
 ==============
@@ -16,23 +20,19 @@ Version v0.5.0
 
 Version v0.4.0
 ==============
-
 - Update for cci v8
 - Uses the new smecv_grid now (with latitudes sorted from - to +)
 
 Version v0.3.0
 ==============
-
 - Update for cci v7
 
 Version v0.2.0
 ==============
-
 - Update for cci v6
 
 Version v0.1.1
 ==============
-
 - Update time series reader class
 - Unmask smecv grid
 - Separate libnetcdf version for python3
@@ -47,12 +47,10 @@ Version v0.1
 
 Version v0.0.2
 ==============
-
 - Changing point of origin of gpis to bottom left corner
 
 Version v0.0.1
 ==============
-
 - Initial version
 - Add CCI reshuffle function
 - Add CCI readers
