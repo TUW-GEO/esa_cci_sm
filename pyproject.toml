@@ -1,0 +1,83 @@
+[build-system]
+# AVOID CHANGING REQUIRES: IT WILL BE UPDATED BY PYSCAFFOLD!
+requires = ["setuptools>=46.1.0", "setuptools_scm[toml]>=5"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# For smarter version schemes and other configuration options,
+# check out https://github.com/pypa/setuptools_scm
+version_scheme = "no-guess-dev"
+
+[project]
+name = "esa_cci_sm"
+description = "Reading and reshuffling of CCI soil moisture"
+readme = { file = "README.rst", content-type = "text/x-rst" }
+license = { text = "MIT" }
+authors = [
+    { name = "TU Wien", email = "remote.sensing@geo.tuwien.ac.at" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "License :: OSI Approved :: MIT License",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "pandas",
+    "pygeobase",
+    "pyresample",
+    "netCDF4",
+    "configparser",
+    "repurpose",
+    "pynetcf",
+    "parse",
+    "pygeogrids",
+    "smecv_grid>=0.3",
+    "more_itertools",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/pyscaffold/pyscaffold/"
+Documentation = "https://pyscaffold.org/"
+
+[project.optional-dependencies]
+testing = [
+    "pytest",
+    "pytest-cov",
+    "coverage",
+]
+docs = [
+    "sphinx_rtd_theme",
+]
+
+[project.scripts]
+ccism_reshuffle = "esa_cci_sm.reshuffle:run"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests*"]
+
+[tool.pytest.ini_options]
+addopts = "--cov esa_cci_sm --cov-report term-missing --verbose"
+norecursedirs = ["dist", "build", ".tox"]
+testpaths = ["tests"]
+
+# NOTE: flake8 does not natively support pyproject.toml.
+# To use [tool.flake8] here, install the `flake8-pyproject` plugin.
+# Alternatively, keep flake8 config in .flake8 or setup.cfg.
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [".tox", "build", "dist", ".eggs", "docs/conf.py"]
+
+[tool.pyscaffold]
+# PyScaffold's parameters when the project was created.
+# This will be used when updating. Do not change!
+version = "4.6"
+package = "esa_cci_sm"
+extensions = ["no_skeleton"]
