@@ -27,12 +27,10 @@ time series format using the repurpose package
 '''
 
 import os
-import sys
 import argparse
 from parse import parse
-
+import sys
 from datetime import datetime
-
 from repurpose.img2ts import Img2Ts
 from esa_cci_sm.interface import CCI_SM_025Ds
 from esa_cci_sm.grid import CCILandGrid, CCICellGrid
@@ -44,6 +42,8 @@ from collections import OrderedDict
 from netCDF4 import Dataset
 import numpy as np
 
+_default_template = '{product}-SOILMOISTURE-L3S-{data_type}-{sensor_type}-' \
+           '{datetime}000000-fv{version}.{sub_version}.nc'
 
 def str2bool(val):
     if val in ['True', 'true', 't', 'T', '1']:
@@ -58,7 +58,7 @@ def mkdate(datestring):
         return datetime.strptime(datestring, '%Y-%m-%dT%H:%M')
 
 
-def parse_filename(data_dir):
+def parse_filename(data_dir, template=_default_template):
     '''
     Take the first file in the passed directory and use its file name to
     retrieve the product type, version number and variables in the file.
@@ -67,6 +67,8 @@ def parse_filename(data_dir):
     ----------
     inroot : str
         Input root directory
+    template: str, optional
+        Template to use for parsing
 
     Returns
     -------
@@ -75,8 +77,7 @@ def parse_filename(data_dir):
     file_vars : list
         Names of parameters in the first detected file
     '''
-    template = '{product}-SOILMOISTURE-L3S-{data_type}-{sensor_type}-' \
-               '{datetime}000000-fv{version}.{sub_version}.nc'
+
 
     for curr, subdirs, files in os.walk(data_dir):
         for f in files:
@@ -152,8 +153,8 @@ def read_metadata(sensortype, version, varnames):
 
 def reshuffle(input_root, outputpath,
               startdate, enddate,
-              parameters=None, land_points=True, ignore_meta=False,
-              imgbuffer=200):
+              parameters=None, land_points=True, ignore_meta=True,
+              template=_default_template, imgbuffer=200):
     """
     Reshuffle method applied to ESA CCI SM images.
 
@@ -185,13 +186,15 @@ def reshuffle(input_root, outputpath,
     if not os.path.exists(outputpath):
         os.makedirs(outputpath)
 
-    file_args, file_vars = parse_filename(input_root)
+    file_args, file_vars = parse_filename(input_root, template)
 
     if parameters is None:
         parameters = [p for p in file_vars if p not in ['lat', 'lon', 'time']]
 
+    freq_h = 12 if file_args['sensor_type'].lower() == 'subdaily' else 24
     input_dataset = CCI_SM_025Ds(data_path=input_root, parameter=parameters,
-                                 subgrid=grid, array_1D=True)
+                                 subgrid=grid, array_1D=True,
+                                 freq_h=freq_h)
 
     if not ignore_meta:
         global_attr, ts_attributes = read_metadata(sensortype=file_args['sensor_type'],
@@ -243,11 +246,13 @@ def parse_args(args):
                               "sm for Volumetric soil water layer. If None are passed"
                               "all variables in the image files are used"))
 
-    parser.add_argument("--land_points", type=str2bool, default='False',
+    parser.add_argument("--land_points", type=str2bool, default='True',
                         help=("Set True to convert only land points as defined"
                               " in the SMECV-grid land mask (faster and less/smaller files)"))
-    parser.add_argument("--ignore_meta", type=str2bool, default='False',
+    parser.add_argument("--ignore_meta", type=str2bool, default='True',
                         help=("Do not apply metadata from ini files to the time series"))
+    parser.add_argument("--fn_templ", type=str, default=_default_template,
+                        help=("Template to parse image files"))
     parser.add_argument("--imgbuffer", type=int, default=200,
                         help=("How many images to read at once. Bigger numbers make the "
                               "conversion faster but consume more memory."))
@@ -268,6 +273,7 @@ def main(args):
               args.start,
               args.end,
               args.parameters,
+              template=args.fn_templ,
               land_points=args.land_points,
               ignore_meta=args.ignore_meta,
               imgbuffer=args.imgbuffer)

@@ -159,14 +159,15 @@ class CCI_SM_025Ds(MultiTemporalImageBase):
         If set then the data is read into 1D arrays. Needed for some legacy code.
     """
 
-    def __init__(self, data_path, parameter=None, subgrid=None, array_1D=False):
+    def __init__(self, data_path, parameter=None, subgrid=None, array_1D=False,
+                 freq_h=24):
 
         ioclass_kws = {'parameter': parameter,
                        'subgrid': subgrid,
                        'array_1D': array_1D}
-
+        self.freq_h = freq_h
         sub_path = ['%Y']
-        filename_templ = "ESACCI-SOILMOISTURE-L3S-*-{datetime}-fv*.nc"
+        filename_templ = "*-{datetime}-fv*.nc"
         super(CCI_SM_025Ds, self).__init__(data_path, CCI_SM_025Img,
                                                   fname_templ=filename_templ,
                                                   datetime_format="%Y%m%d%H%M%S",
@@ -184,6 +185,8 @@ class CCI_SM_025Ds(MultiTemporalImageBase):
             start of date range
         end_date: datetime
             end of date range
+        freq: int
+            Temporal sampling rate in hours
 
         Returns
         -------
@@ -191,8 +194,7 @@ class CCI_SM_025Ds(MultiTemporalImageBase):
             list of datetime objects of each available image between
             start_date and end_date
         """
-
-        next = lambda date: date + relativedelta(days=1)
+        next = lambda date: date + relativedelta(hours=self.freq_h)
 
         timestamps = [start_date]
         while next(timestamps[-1]) <= end_date:
@@ -239,3 +241,9 @@ class CCITs(GriddedNcOrthoMultiTs):
 
         grid = load_grid(grid_path)
         super(CCITs, self).__init__(ts_path, grid, **kwargs)
+
+
+if __name__ == '__main__':
+    from datetime import datetime
+    ds = CCI_SM_025Ds("/home/wpreimes/shares/users/delete_me/subdaily/images")
+    img = ds.read(datetime(2012,8,29))
