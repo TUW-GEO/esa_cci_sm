@@ -11,6 +11,13 @@ Version v0.5.0
 ==============
 - Update for cci v9 (FT and RZSM support added).
 
+Version v0.5.0
+==============
+
+- Update for v9
+- Metadata is not included by default anymore
+- CI, docs and dependency list updated
+
 Version v0.4.0
 ==============
 - Update for cci v8

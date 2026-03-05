@@ -209,8 +209,7 @@ def reshuffle(input_root, outputpath,
 
     reshuffler = Img2Ts(input_dataset=input_dataset, outputpath=outputpath,
                         startdate=startdate, enddate=enddate, input_grid=grid,
-                        imgbuffer=imgbuffer, cellsize_lat=5.0, cellsize_lon=5.0,
-                        global_attr=global_attr, zlib=True,
+                        imgbuffer=imgbuffer, global_attr=global_attr, zlib=True,
                         unlim_chunksize=1000, ts_attributes=ts_attributes)
     reshuffler.calc()
 
