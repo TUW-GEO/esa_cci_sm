@@ -50,13 +50,15 @@ jobs:
         run: |
           if [ ${{ matrix.os }} == "macos-latest" ]
           then
+            # pykdtree requires C libraries (libOpenMP) not bundled in the pip
+            # wheel, so we install via conda-forge which handles the native deps
             conda install -c conda-forge pykdtree
           fi
           pip install -e .[testing]
       - name: Run all tests
         shell: bash -l {0}
         run: |
-          pytest
+          python -m pytest
       - name: Export Environment
         shell: bash -l {0}
         run: |
@@ -66,20 +68,20 @@ jobs:
       - name: Create wheel and dist package
         shell: bash -l {0}
         run: |
-          pip install setuptools_scm twine
+          pip install build twine
           if [ ${{ matrix.os }} == "windows-latest" ]
           then
-            # build whls on windows
-            pip install wheel
-            python setup.py bdist_wheel --dist-dir artifacts/dist
+            # build wheel on windows
+            python -m build --wheel --outdir artifacts/dist
           else
-            # build dist on linux
-            python setup.py sdist --dist-dir artifacts/dist
+            # build sdist on linux/mac
+            python -m build --sdist --outdir artifacts/dist
           fi
           ls artifacts/dist
           twine check artifacts/dist/*
       - name: Upload Coverage
         shell: bash -l {0}
+        continue-on-error: true
         run: |
           pip install coveralls && coveralls --service=github
         env:
