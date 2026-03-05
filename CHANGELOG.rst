@@ -4,16 +4,16 @@ Changelog
 
 Unreleased changes (master)
 ===========================
+-
+
+Version v0.6.0
+==============
 - Added support for subdaily (12-hourly) product
 - Set `ignore_meta` to `True` by default during time series conversion
-
-Version v0.5.0
-==============
 - Update for cci v9 (FT and RZSM support added).
 
 Version v0.5.0
 ==============
-
 - Update for v9
 - Metadata is not included by default anymore
 - CI, docs and dependency list updated
