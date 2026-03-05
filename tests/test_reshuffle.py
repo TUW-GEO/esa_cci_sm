@@ -56,11 +56,7 @@ def test_reshuffle_v042():
     startdate = "2016-06-06T00:00"
     enddate = "2016-06-07T00:00"
     parameters = ["--parameters", "sm", "sm_uncertainty"]
-<<<<<<< HEAD
-    land_points = ["--land_points", "True", "--ignore_meta", "False"]
-=======
     land_points = ["--land_points", "True", '--ignore_meta', "False"]
->>>>>>> a4619eec951e3de8d0f058815f358fb03a905954
 
     ts_path = tempfile.mkdtemp()
     args = [inpath, ts_path, startdate, enddate] + parameters + land_points
